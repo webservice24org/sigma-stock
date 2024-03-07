@@ -11,12 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('purchase_units', function (Blueprint $table) {
+        Schema::create('product_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('unit_name');
-            
+            $table->integer('product_id');
+            $table->text('product_short_desc');
+            $table->longText('product_long_desc')->nullable();
+            $table->longText('product_gallery')->nullable();
+
             $table->foreign('user_id')->references('id')->on('users')
+                ->cascadeOnUpdate()->restrictOnDelete();
+                
+            $table->foreign('product_id')->references('id')->on('products')
                 ->cascadeOnUpdate()->restrictOnDelete();
             $table->timestamps();
         });
@@ -27,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('purchase_units');
+        Schema::dropIfExists('product_details');
     }
 };

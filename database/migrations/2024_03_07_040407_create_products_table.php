@@ -13,6 +13,33 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->string('code', 192);
+			$table->string('type_barcode', 192);
+			$table->string('name', 192);
+			$table->float('making_cost', 10, 0);
+			$table->integer('category_id')->index('category_id');
+			$table->integer('unit_id')->nullable()->index('unit_id_products');
+			$table->integer('purchase_id')->nullable()->index('purchase_id');
+			$table->integer('discount')->nullable();
+			$table->float('tax_rate', 10, 0)->nullable()->default(0);
+			$table->text('image')->nullable();
+			$table->text('note')->nullable();
+            
+			$table->float('stock_alert', 10, 0)->nullable()->default(0);
+
+            $table->foreign('user_id')->references('id')->on('users')
+                ->cascadeOnUpdate()->restrictOnDelete();
+                
+            $table->foreign('category_id')->references('id')->on('product_categories')
+                ->cascadeOnUpdate()->restrictOnDelete();
+
+            $table->foreign('unit_id')->references('id')->on('product_units')
+                ->cascadeOnUpdate()->restrictOnDelete();
+            
+            $table->foreign('purchase_id')->references('id')->on('purchases')
+                ->cascadeOnUpdate()->restrictOnDelete();
+
             $table->timestamps();
         });
     }

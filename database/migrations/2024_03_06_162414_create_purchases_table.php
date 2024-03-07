@@ -17,7 +17,7 @@ return new class extends Migration
 			$table->integer('supplier_id')->index('supplier_id');
 			$table->integer('warehouse_id')->index('warehouse_id');
 			$table->integer('purchase_category_id')->index('purchase_category_id');
-            $table->integer('purchase_unit_id');
+            $table->integer('unit_id');
             
 			$table->date('date');
 			$table->float('tax_rate', 10, 0)->nullable()->default(0);
@@ -39,7 +39,7 @@ return new class extends Migration
             $table->foreign('warehouse_id')->references('id')->on('warehouses')
                 ->cascadeOnUpdate()->restrictOnDelete();
 
-            $table->foreign('purchase_unit_id')->references('id')->on('purchase_units')
+            $table->foreign('unit_id')->references('id')->on('product_units')
                 ->cascadeOnUpdate()->restrictOnDelete();
                 
             $table->foreign('purchase_category_id')->references('id')->on('purchase_categories')
