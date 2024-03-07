@@ -20,68 +20,10 @@
                 <li>
                     <a class="active" href="/"><span class="icon home" aria-hidden="true"></span>Dashboard</a>
                 </li>
-                <li>
-                    <a class="show-cat-btn" href="#">
-                        <span class="icon document" aria-hidden="true"></span>Todos
-                        <span class="category__btn transparent-btn" title="Open list">
-                            <span class="sr-only">Open list</span>
-                            <span class="icon arrow-down" aria-hidden="true"></span>
-                        </span>
-                    </a>
-                    <ul class="cat-sub-menu">
-                        <li>
-                            <a href="{{url('/todos')}}">All Todos</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="show-cat-btn" href="##">
-                        <span class="icon folder" aria-hidden="true"></span>News Update
-                        <span class="category__btn transparent-btn" title="Open list">
-                            <span class="sr-only">Open list</span>
-                            <span class="icon arrow-down" aria-hidden="true"></span>
-                        </span>
-                    </a>
-                    <ul class="cat-sub-menu">
-                        <li>
-                            <a href="{{url('/categories')}}">All categories</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="show-cat-btn" href="##">
-                        <span class="icon image" aria-hidden="true"></span>Products
-                        <span class="category__btn transparent-btn" title="Open list">
-                            <span class="sr-only">Open list</span>
-                            <span class="icon arrow-down" aria-hidden="true"></span>
-                        </span>
-                    </a>
-                    <ul class="cat-sub-menu">
-                        <li>
-                            <a href="{{url('/brands')}}">Brands</a>
-                        </li>
-                        <li>
-                            <a href="{{url('/product-categories')}}">Product Categories</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="show-cat-btn" href="##">
-                        <span class="icon image" aria-hidden="true"></span>Education
-                        <span class="category__btn transparent-btn" title="Open list">
-                            <span class="sr-only">Open list</span>
-                            <span class="icon arrow-down" aria-hidden="true"></span>
-                        </span>
-                    </a>
-                    <ul class="cat-sub-menu">
-                        <li>
-                            <a href="{{url('/teachers')}}">Teachers</a>
-                        </li>
-                        <li>
-                            <a href="{{url('/students')}}">Students</a>
-                        </li>
-                    </ul>
-                </li>
+                
+                
+                
+                
                 <li>
                     <a class="show-cat-btn" href="##">
                         <span class="icon paper" aria-hidden="true"></span>Pages

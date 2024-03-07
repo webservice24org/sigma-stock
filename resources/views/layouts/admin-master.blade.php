@@ -47,10 +47,10 @@
     <a class="skip-link sr-only" href="#skip-target">Skip to content</a>
     <div class="page-flex">
         <!-- ! Sidebar -->
-        @include('layouts.admin-components.sidebar')
+        @include('layouts.dashboard-components.sidebar')
         <div class="main-wrapper">
             <!-- ! Main nav -->
-            @include('layouts.admin-components.nav')
+            @include('layouts.dashboard-components.nav')
             
             <!-- ! Main -->
             <main class="main users chart-page" id="skip-target">
