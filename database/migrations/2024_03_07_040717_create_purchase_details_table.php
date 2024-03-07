@@ -13,6 +13,19 @@ return new class extends Migration
     {
         Schema::create('purchase_details', function (Blueprint $table) {
             $table->id();
+            $table->integer('purchase_id');
+            $table->float('discount', 10, 0)->nullable()->default(0);
+			$table->float('shipping', 10, 0)->nullable()->default(0);
+            $table->integer('purchase_qty');
+			$table->float('grand_total', 10, 0);
+			$table->float('paid_amount', 10, 0)->default(0);
+			$table->float('due_amount', 10, 0)->default(0);
+            
+            $table->foreign('purchase_id')->references('id')->on('purchases')
+                ->cascadeOnUpdate()->restrictOnDelete();
+            
+            
+                
             $table->timestamps();
         });
     }

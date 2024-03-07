@@ -11,20 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('suppliers', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->integer('category_id')->index('category_id');
             $table->string('shopname')->nullable();
             $table->string('trade_license')->nullable();
             $table->string('business_phone')->nullable();
-            $table->tinyInteger('status' )
-                ->default(0)
-                ->comment('0=Pending, 1=Approved');
-            $table->text('note')->nullable();
+            $table->float('product_rate');
+            $table->float('tax_rate', 10, 0)->nullable()->default(0);
             
             $table->foreign('user_id')->references('id')->on('users')
                 ->cascadeOnUpdate()->restrictOnDelete();
-
+                
+            $table->foreign('category_id')->references('id')->on('customer_categories')
+                ->cascadeOnUpdate()->restrictOnDelete();
             $table->timestamps();
         });
     }
@@ -34,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('suppliers');
+        Schema::dropIfExists('customers');
     }
 };

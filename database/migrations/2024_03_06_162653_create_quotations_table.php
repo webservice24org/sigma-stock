@@ -13,6 +13,25 @@ return new class extends Migration
     {
         Schema::create('quotations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->index('user_id');
+			$table->date('date');
+			$table->integer('customer_id')->index('customer_id');
+			$table->integer('warehouse_id')->index('warehouse_id');
+            $table->integer('tax_percentage')->default(0);
+			$table->float('discount', 10, 0)->nullable()->default(0);
+			$table->float('shipping_amount', 10, 0)->nullable()->default(0);
+			$table->float('total_amount', 10, 0);
+			$table->tinyInteger('status' )
+                ->default(0)
+                ->comment('0=Pending, 1=Approved');
+            $table->text('note')->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users')
+                ->cascadeOnUpdate()->restrictOnDelete();
+
+            $table->foreign('customer_id')->references('id')->on('customers')
+                ->cascadeOnUpdate()->restrictOnDelete();
+                
             $table->timestamps();
         });
     }

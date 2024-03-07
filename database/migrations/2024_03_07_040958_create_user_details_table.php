@@ -13,6 +13,20 @@ return new class extends Migration
     {
         Schema::create('user_details', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->string('phone')->unique()->nullable();
+            $table->string('address')->nullable();
+            $table->string('dob')->nullable();
+            $table->string('nid')->nullable();
+            $table->string('bank_name')->nullable();
+            $table->string('account_holder')->nullable();
+            $table->string('account_number')->nullable();
+            $table->tinyInteger('status' )
+                ->default(0)
+                ->comment('0=Pending, 1=Approved');
+                
+            $table->foreign('user_id')->references('id')->on('users')
+                ->cascadeOnUpdate()->restrictOnDelete();
             $table->timestamps();
         });
     }
