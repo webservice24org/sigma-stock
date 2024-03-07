@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_details', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->integer('product_id');
+            $table->unsignedBigInteger('product_id');
             $table->text('product_short_desc');
             $table->longText('product_long_desc')->nullable();
             $table->longText('product_gallery')->nullable();

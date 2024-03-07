@@ -11,11 +11,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('product_customers', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
-            $table->integer('user_id');
-            $table->integer('customer_id');
-            $table->integer('product_id');
-            $table->integer('category_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('category_id');
             $table->float('product_price');
 
             $table->foreign('user_id')->references('id')->on('users')

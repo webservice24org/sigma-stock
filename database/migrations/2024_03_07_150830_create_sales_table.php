@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sales', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
-            $table->integer('id', true);
-			$table->integer('user_id')->index('user_id_sales');
-			$table->integer('customer_id')->index('sale_customer_id');
-			$table->integer('warehouse_id')->index('warehouse_id_sale');
+			$table->unsignedBigInteger('user_id')->index('user_id_sales');
+			$table->unsignedBigInteger('customer_id')->index('sale_customer_id');
+			$table->unsignedBigInteger('warehouse_id')->index('warehouse_id_sale');
 			$table->date('date');
 			$table->float('tax_rate', 10, 0)->nullable()->default(0);
 			$table->float('discount', 10, 0)->nullable()->default(0);

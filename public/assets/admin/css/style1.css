@@ -1,0 +1,7 @@
+#todoForm .error{
+    color:red;
+}
+
+.no-sort::before, .no-sort::after{
+    content: none!important;
+}

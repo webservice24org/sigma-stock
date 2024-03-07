@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('employees', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->integer('hrm_department_id');
+            $table->unsignedBigInteger('hrm_department_id');
             $table->integer('salary_amount');
             $table->dateTime('joining_date');
 

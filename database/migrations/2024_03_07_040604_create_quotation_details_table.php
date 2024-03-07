@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('quotation_details', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
-			$table->integer('quotation_id')->index('quotation_id');
+			$table->unsignedBigInteger('quotation_id')->index('quotation_id');
 			$table->float('quantity', 10, 0);
-			$table->integer('product_id')->index('product_id_quotation_details');
+			$table->unsignedBigInteger('product_id')->index('product_id_quotation_details');
             
             $table->foreign('quotation_id')->references('id')->on('quotations')
                 ->cascadeOnUpdate()->restrictOnDelete();

@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('role_users', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
-            $table->integer('user_id')->index('role_user_user_id');
-			$table->integer('role_id')->index('role_user_role_id');
+            $table->unsignedBigInteger('user_id')->index('role_user_user_id');
+			$table->unsignedBigInteger('role_id')->index('role_user_role_id');
 
             $table->foreign('user_id')->references('id')->on('users')
                 ->cascadeOnUpdate()->restrictOnDelete();
