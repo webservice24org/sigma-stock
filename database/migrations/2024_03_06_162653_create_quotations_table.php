@@ -32,6 +32,7 @@ return new class extends Migration
 
             $table->foreign('customer_id')->references('id')->on('customers')
                 ->cascadeOnUpdate()->restrictOnDelete();
+
                 $table->foreign('warehouse_id')->references('id')->on('warehouses')
                 ->cascadeOnUpdate()->restrictOnDelete();
                 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CustomerCategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +27,5 @@ Route::middleware([
         return view('layouts.index');
     })->name('dashboard');
 });
+
+Route::resource('customers-categories', CustomerCategoryController::class);
