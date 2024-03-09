@@ -27,10 +27,12 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('layouts.index');
     })->name('dashboard');
+
+    Route::resource('customers-categories', CustomerCategoryController::class);
+
+    Route::resource('suppliers', SupplierController::class);
+
+    Route::get('/users', [SupplierController::class, 'allUsers']);
 });
 
-Route::resource('customers-categories', CustomerCategoryController::class);
 
-Route::resource('suppliers', SupplierController::class);
-
-Route::get('/users', [SupplierController::class, 'allUsers']);

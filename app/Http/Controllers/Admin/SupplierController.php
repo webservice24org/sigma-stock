@@ -92,8 +92,18 @@ class SupplierController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        try {
+            $supplier = Supplier::findOrFail($id);
+            
+            $supplier->delete();
+            
+            return response()->json(['status' => 'success', 'message' => 'Supplier deleted successfully']);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'failed', 'message' => 'Failed to delete supplier: ' . $e->getMessage()]);
+        }
     }
+
+    
 }

@@ -97,7 +97,52 @@ $('#createSupplierModal').on('shown.bs.modal', function () {
     });
     
 
-    
+    $("#supplierTable").on("click", ".deleteSupplier", function() {
+        var supplierId = $(this).data("id");
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this supplier!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "DELETE",
+                    url: `/suppliers/${supplierId}`,
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            $('#supplierTable').DataTable().row($(`#supplier_${supplierId}`)).remove().draw();
+
+                            Swal.fire(
+                                'Deleted!',
+                                'Supplier has been deleted.',
+                                'success'
+                            );
+                        } else if (response.status === 'failed') {
+                            Swal.fire(
+                                'Error!',
+                                response.message,
+                                'error'
+                            );
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire(
+                            'Error!',
+                            'An error occurred while deleting the supplier.',
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
+    });
+
 
 });
 
