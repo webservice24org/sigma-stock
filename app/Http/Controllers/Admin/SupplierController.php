@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Supplier;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Exception;
 
 class SupplierController extends Controller
 {
@@ -12,7 +15,14 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        //
+        $suppliers = Supplier::all();
+        return view('layouts.pages.suppliers', compact('suppliers'));
+    }
+
+    public function allUsers()
+    {
+        $users = User::all();
+        return response()->json(['users' => $users]);
     }
 
     /**
@@ -20,7 +30,7 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -28,8 +38,32 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the incoming request data
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'shopname' => 'required|string|max:255',
+            'trade_license' => 'required|string|max:255',
+            'business_phone' => 'required|string|max:20',
+        ]);
+    
+        try {
+            $supplier = new Supplier();
+            
+            $supplier->user_id = $request->input('user_id');
+            $supplier->created_by = auth()->id();
+            $supplier->shopname = $request->input('shopname');
+            $supplier->trade_license = $request->input('trade_license');
+            $supplier->business_phone = $request->input('business_phone');
+            
+            $supplier->save();
+    
+            return response()->json(['status' => 'success', 'message' => 'Supplier created successfully.', 'supplier' => $supplier], 201);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
+        }
     }
+    
+
 
     /**
      * Display the specified resource.

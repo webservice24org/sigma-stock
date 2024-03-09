@@ -15,6 +15,7 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->string('created_by')->nullable();
             $table->string('shopname')->nullable();
             $table->string('trade_license')->nullable();
             $table->string('business_phone')->nullable();

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CustomerCategoryController;
+use App\Http\Controllers\Admin\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,3 +30,7 @@ Route::middleware([
 });
 
 Route::resource('customers-categories', CustomerCategoryController::class);
+
+Route::resource('suppliers', SupplierController::class);
+
+Route::get('/users', [SupplierController::class, 'allUsers']);
