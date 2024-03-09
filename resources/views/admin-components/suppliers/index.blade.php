@@ -18,8 +18,6 @@
                         <thead>
                             <tr>
                                 <th>id</th>
-                                <th>Added By</th>
-                                <th>Supplier Name</th>
                                 <th>Shop Name</th>
                                 <th>Trade License</th>
                                 <th>Business Phone</th>
@@ -29,10 +27,8 @@
                         </thead>
                         <tbody>
                             @foreach($suppliers as $item)
-                                <tr id="category_{{$item->id}}">
+                                <tr id="supplier_{{$item->id}}">
                                     <td>{{$item->id}}</td>
-                                    <td>{{$item->createdBy->name}}</td>
-                                    <td>{{$item->user->name}}</td>
                                     <td>{{$item->shopname}}</td>
                                     <td>{{$item->trade_license}}</td>
                                     <td>{{$item->business_phone}}</td>

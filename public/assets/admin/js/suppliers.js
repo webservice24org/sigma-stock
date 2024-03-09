@@ -4,28 +4,30 @@ $.ajaxSetup({
   }
 });
 
-const supplierTable = $('#supplierTable').DataTable();
-$('#supplierCreate').on('click', function() {
-    $('#createSupplierModal').modal('toggle');
-})
+    const supplierTable = $('#supplierTable').DataTable();
+    $('#supplierCreate').on('click', function() {
+        $('#createSupplierModal').modal('toggle');
+    })
 
-$('#createSupplierModal').on('shown.bs.modal', function () {
-    $.ajax({
-        type: 'GET',
-        url: '/users', 
-        dataType: "json",
-        success: function(response) {
-            $('#user_id').empty();
-            $.each(response.users, function(index, user) {
-                $('#user_id').append($('<option>', {
-                    value: user.id,
-                    text: user.name
-                }));
-            });
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching users:', error);
-        }
+    $('#createSupplierModal').on('shown.bs.modal', function () {
+        $.ajax({
+            type: 'GET',
+            url: '/users', 
+            dataType: "json",
+            success: function(response) {
+                $('#user_id').empty();
+                $.each(response.users, function(index, user) {
+                    $('#user_id').append($('<option>', {
+                        value: user.id,
+                        text: user.name
+                    }));
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching users:', error);
+            }
+        });
+
     });
 
     $('#createSupplierForm').validate({
@@ -72,8 +74,6 @@ $('#createSupplierModal').on('shown.bs.modal', function () {
                         toastr.success(response.message);
                         const newRowData = [
                             response.supplier.id,
-                            response.supplier.createdBy.name,
-                            response.supplier.user.name, // Assuming you want the same name here as the created_by
                             response.supplier.shopname,
                             response.supplier.trade_license,
                             response.supplier.business_phone,
@@ -83,7 +83,10 @@ $('#createSupplierModal').on('shown.bs.modal', function () {
                             '<a href="javascript:void(0)" class="btn btn-success statusSupplier" data-id="' + response.supplier.id + '">Status</a>' +
                             '<a href="javascript:void(0)" class="btn btn-danger deleteSupplier" data-id="' + response.supplier.id + '">Delete</a>'
                         ];
-                        $('#supplierTable').DataTable().row.add(newRowData).draw();
+                        $('#supplierTable').DataTable().row.add(newRowData).draw(false);
+                        //supplierTable.row.add(newRowData).draw(false);
+
+
                     } else if (response.status === 'failed') {
                         toastr.error(response.message);
                     }
@@ -96,54 +99,40 @@ $('#createSupplierModal').on('shown.bs.modal', function () {
         }
     });
     
+    // JavaScript to handle viewing supplier details
 
-    $("#supplierTable").on("click", ".deleteSupplier", function() {
-        var supplierId = $(this).data("id");
-
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover this supplier!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: "DELETE",
-                    url: `/suppliers/${supplierId}`,
-                    dataType: "json",
-                    success: function(response) {
-                        if (response.status === 'success') {
-                            $('#supplierTable').DataTable().row($(`#supplier_${supplierId}`)).remove().draw();
-
-                            Swal.fire(
-                                'Deleted!',
-                                'Supplier has been deleted.',
-                                'success'
-                            );
-                        } else if (response.status === 'failed') {
-                            Swal.fire(
-                                'Error!',
-                                response.message,
-                                'error'
-                            );
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire(
-                            'Error!',
-                            'An error occurred while deleting the supplier.',
-                            'error'
-                        );
-                    }
-                });
+    $("#supplierTable ").on('click', '.viewSupplier', function() {
+        // Retrieve the supplier ID from the data-id attribute
+        var supplierId = $(this).data('id');
+        
+        $.ajax({
+            type: 'GET',
+            url: '/suppliers/' + supplierId,
+            dataType: 'json',
+            success: function(response) {
+                
+                    $("#viewSupplierForm #user_id").val(response.supplier.user.name);
+                    $("#viewSupplierForm #shopname").val(response.supplier.shopname);
+                    $("#viewSupplierForm #trade_license").val(response.supplier.trade_license);
+                    $("#viewSupplierForm #business_phone").val(response.supplier.business_phone);
+                    $("#viewSupplierForm #note").val(response.supplier.note);
+                    $("#viewSupplierForm #supplierId").val(response.supplier.id);
+                    $("#viewSupplierForm #created_by").val(response.supplier.created_by.name);
+                    
+                        
+                    $('#supplierViewModal').modal('toggle'); 
+                
+            },
+            
+            error: function(xhr, status, error) {
+                console.error('AJAX error:', error);
             }
         });
+        
+        
+
     });
 
-
-});
+    
 
 

@@ -45,33 +45,42 @@ class SupplierController extends Controller
             'trade_license' => 'required|string|max:255',
             'business_phone' => 'required|string|max:20',
         ]);
-    
+
         try {
             $supplier = new Supplier();
-            
+
             $supplier->user_id = $request->input('user_id');
             $supplier->created_by = auth()->id();
             $supplier->shopname = $request->input('shopname');
             $supplier->trade_license = $request->input('trade_license');
             $supplier->business_phone = $request->input('business_phone');
-            
+            $supplier->note = $request->input('note');
+
             $supplier->save();
-    
+
             return response()->json(['status' => 'success', 'message' => 'Supplier created successfully.', 'supplier' => $supplier], 201);
         } catch (Exception $e) {
             return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
         }
     }
-    
+
 
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $supplier = Supplier::with('user', 'createdBy')->find($id);
+        return response()->json(['supplier' => $supplier], 200);
+
+        if (!$supplier) {
+            return response()->json(['status' => 'failed', 'message' => 'Supplier Not found']);
+        }
+
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -96,14 +105,14 @@ class SupplierController extends Controller
     {
         try {
             $supplier = Supplier::findOrFail($id);
-            
+
             $supplier->delete();
-            
+
             return response()->json(['status' => 'success', 'message' => 'Supplier deleted successfully']);
         } catch (Exception $e) {
             return response()->json(['status' => 'failed', 'message' => 'Failed to delete supplier: ' . $e->getMessage()]);
         }
     }
 
-    
+
 }
