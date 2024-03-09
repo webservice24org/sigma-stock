@@ -28,4 +28,9 @@ class Supplier extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+    public function userDetail()
+    {
+        return $this->belongsTo(UserDetails::class, 'user_id');
+    }
+
 }

@@ -111,16 +111,27 @@ $.ajaxSetup({
             dataType: 'json',
             success: function(response) {
                 
-                    $("#viewSupplierForm #user_id").val(response.supplier.user.name);
-                    $("#viewSupplierForm #shopname").val(response.supplier.shopname);
-                    $("#viewSupplierForm #trade_license").val(response.supplier.trade_license);
-                    $("#viewSupplierForm #business_phone").val(response.supplier.business_phone);
-                    $("#viewSupplierForm #note").val(response.supplier.note);
-                    $("#viewSupplierForm #supplierId").val(response.supplier.id);
-                    $("#viewSupplierForm #created_by").val(response.supplier.created_by.name);
+                if (response.supplier.user.profile_photo_path) {
+                    $("#viewSupplierForm #user_photo").attr("src", response.supplier.user.profile_photo_path);
+                }else{
+                    $("#viewSupplierForm #user_photo").attr("src", '/assets/admin/img/users/default.png');
+
+                }
+                $("#viewSupplierForm #user_id").val(response.supplier.user.name);
+                $("#viewSupplierForm #user_mail").val(response.supplier.user.email);
+                $("#viewSupplierForm #shopname").val(response.supplier.shopname);
+                $("#viewSupplierForm #trade_license").val(response.supplier.trade_license);
+                $("#viewSupplierForm #business_phone").val(response.supplier.business_phone);
+                $("#viewSupplierForm #user_phone").val(response.supplier.user_detail.phone);
+                $("#viewSupplierForm #address").val(response.supplier.user_detail.address);
+                $("#viewSupplierForm #dob").val(response.supplier.user_detail.dob);
+                $("#viewSupplierForm #nid").val(response.supplier.user_detail.nid);
+                $("#viewSupplierForm #note").val(response.supplier.note);
+                $("#viewSupplierForm #supplierId").val(response.supplier.id);
+                $("#viewSupplierForm #created_by").val(response.supplier.created_by.name);
                     
                         
-                    $('#supplierViewModal').modal('toggle'); 
+                $('#supplierViewModal').modal('toggle'); 
                 
             },
             

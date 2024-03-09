@@ -71,7 +71,7 @@ class SupplierController extends Controller
      */
     public function show($id)
     {
-        $supplier = Supplier::with('user', 'createdBy')->find($id);
+        $supplier = Supplier::with('user', 'createdBy', 'userDetail')->find($id);
         return response()->json(['supplier' => $supplier], 200);
 
         if (!$supplier) {
