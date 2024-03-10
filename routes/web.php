@@ -36,3 +36,4 @@ Route::middleware([
 });
 
 
+//Route::get('user-details/{id}', [SupplierController::class, 'userDetails']);

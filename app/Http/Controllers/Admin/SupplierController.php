@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
 use App\Models\User;
+use App\Models\UserDetails;
 use Illuminate\Http\Request;
 use Exception;
 
@@ -66,19 +67,37 @@ class SupplierController extends Controller
 
 
 
-    /**
-     * Display the specified resource.
-     */
+    /*
+     
+     
     public function show($id)
     {
         $supplier = Supplier::with('user', 'createdBy', 'userDetail')->find($id);
-        return response()->json(['supplier' => $supplier], 200);
+
 
         if (!$supplier) {
             return response()->json(['status' => 'failed', 'message' => 'Supplier Not found']);
         }
 
+        return response()->json(['supplier' => $supplier], 200);
     }
+*/
+    public function show($id)
+    {
+        $supplier = Supplier::select('suppliers.*', 'users.name as supplier_name', 'created_by.name as created_by_name', 'user_details.*')
+            ->join('users', 'suppliers.user_id', '=', 'users.id')
+            ->leftJoin('user_details', 'users.id', '=', 'user_details.user_id')
+            ->leftJoin('users as created_by', 'suppliers.created_by', '=', 'created_by.id')
+            ->where('suppliers.id', $id)
+            ->first();
+
+        if (!$supplier) {
+            return response()->json(['status' => 'failed', 'message' => 'Supplier Not found']);
+        }
+
+        return response()->json(['supplier' => $supplier], 200);
+    }
+
 
 
 
@@ -97,30 +116,21 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Validate the incoming request
         $request->validate([
             'shopname' => 'required|string',
             'trade_license' => 'required|string',
             'business_phone' => 'required|string',
             'note' => 'nullable|string',
         ]);
-
-        // Find the supplier by ID
         $supplier = Supplier::findOrFail($id);
-
-        // Update the supplier details
         $supplier->user_id = $request->user_id;
         $supplier->created_by = auth()->id();
         $supplier->shopname = $request->shopname;
         $supplier->trade_license = $request->trade_license;
         $supplier->business_phone = $request->business_phone;
         $supplier->note = $request->note;
-
-        // Save the changes
         $supplier->save();
-
-        // Return a success response
-        return response()->json(['message' => 'Supplier updated successfully', 'supplier'=>$supplier], 200);
+        return response()->json(['message' => 'Supplier updated successfully', 'supplier' => $supplier], 200);
     }
 
 
@@ -140,5 +150,12 @@ class SupplierController extends Controller
         }
     }
 
+    /*
+    public function userDetails($id)
+    {
+        $user = UserDetails::findOrFail($id);
+        dd($user);
+    }
+    */
 
 }

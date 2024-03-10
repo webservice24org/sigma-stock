@@ -30,7 +30,8 @@ class Supplier extends Model
     }
     public function userDetail()
     {
-        return $this->belongsTo(UserDetails::class, 'user_id');
+        return $this->hasOne(UserDetails::class, 'user_id');
     }
+
 
 }
