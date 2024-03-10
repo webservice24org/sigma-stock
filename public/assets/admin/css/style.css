@@ -4419,3 +4419,17 @@ label {
       right: -8%;
   }
 }
+
+#supplierViewModal .form-group label {
+	padding-bottom: 5px;
+}
+@media print {
+  /* Add styles for printing here */
+  #supplierViewModal .modal-content {
+      /* Adjust styles for printing */
+  }
+  /* Hide unnecessary elements */
+  .modal-footer {
+      display: none;
+  }
+}

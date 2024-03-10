@@ -85,18 +85,44 @@ class SupplierController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $supplier = Supplier::with('user')->find($id);
+        return response()->json(['supplier' => $supplier], 200);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        // Validate the incoming request
+        $request->validate([
+            'shopname' => 'required|string',
+            'trade_license' => 'required|string',
+            'business_phone' => 'required|string',
+            'note' => 'nullable|string',
+        ]);
+
+        // Find the supplier by ID
+        $supplier = Supplier::findOrFail($id);
+
+        // Update the supplier details
+        $supplier->user_id = $request->user_id;
+        $supplier->created_by = auth()->id();
+        $supplier->shopname = $request->shopname;
+        $supplier->trade_license = $request->trade_license;
+        $supplier->business_phone = $request->business_phone;
+        $supplier->note = $request->note;
+
+        // Save the changes
+        $supplier->save();
+
+        // Return a success response
+        return response()->json(['message' => 'Supplier updated successfully', 'supplier'=>$supplier], 200);
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -84,8 +84,6 @@ class CustomerCategoryController extends Controller
 
         try {
             $customerCategory = CustomerCategory::findOrFail($id);
-            
-            // Update the customer category data
             $customerCategory->update([
                 'cat_name' => $request->input('cat_name'),
             ]);
