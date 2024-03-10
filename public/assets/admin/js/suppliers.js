@@ -259,7 +259,53 @@ $(document).ready(function () {
         });
     });
 
-
+    $('.statusSupplier').click(function() {
+        var supplierId = $(this).data('id');
+        var currentStatus = $(this).data('status');
+    
+        var newStatus;
+        var confirmMessage;
+        if (currentStatus === 0) {
+            newStatus = 1;
+            confirmMessage = "Are you sure you want to approve?";
+        } else {
+            newStatus = 0;
+            confirmMessage = "Are you sure you want to make pending?";
+        }
+    
+        Swal.fire({
+            title: 'Confirmation',
+            text: confirmMessage,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'PUT',
+                    url: '/suppliers/' + supplierId + '/status',
+                    data: { status: newStatus },
+                    dataType: 'json',
+                    success: function(response) {
+                        toastr.success(response.message);
+                        
+                        var rowIndex = supplierTable.row($('#supplier_' + supplierId)).index();
+                        var rowData = supplierTable.row(rowIndex).data();
+                        rowData[4] = newStatus === 1 ? 'Approved' : 'Pending'; // Update status column
+                        supplierTable.row(rowIndex).data(rowData).draw(false);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('An error occurred while processing your request.');
+                        console.error('Error:', xhr.responseText);
+                        toastr.error('An error occurred while processing your request.');
+                    }
+                });
+            }
+        });
+    });
+    
+    
 
 
 

@@ -26,13 +26,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($suppliers as $item)
+                            @foreach ($suppliers as $item)
                                 <tr id="supplier_{{$item->id}}">
                                     <td>{{$item->id}}</td>
                                     <td>{{$item->shopname}}</td>
                                     <td>{{$item->trade_license}}</td>
                                     <td>{{$item->business_phone}}</td>
-                                    <td>{{$item->status ? 'Approved' : 'Pending'}}</td>
+                                    <td>
+                                        @if ($item->status == 0)
+                                            <span class="badge bg-warning">Pending</span>
+                                        @else
+                                            <span class="badge bg-success">Approved</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         <a href="javascript:void(0)" class="btn btn-success viewSupplier" data-id="{{$item->id}}">View</a>
                                         <a href="javascript:void(0)" class="btn btn-success editSupplier" data-id="{{$item->id}}">Edit</a>
@@ -41,6 +47,7 @@
                                     </td>
                                 </tr>
                             @endforeach
+
                         </tbody>
 
                     </table>

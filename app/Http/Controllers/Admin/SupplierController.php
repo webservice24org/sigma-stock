@@ -66,22 +66,6 @@ class SupplierController extends Controller
     }
 
 
-
-    /*
-     
-     
-    public function show($id)
-    {
-        $supplier = Supplier::with('user', 'createdBy', 'userDetail')->find($id);
-
-
-        if (!$supplier) {
-            return response()->json(['status' => 'failed', 'message' => 'Supplier Not found']);
-        }
-
-        return response()->json(['supplier' => $supplier], 200);
-    }
-*/
     public function show($id)
     {
         $supplier = Supplier::select('suppliers.*', 'users.name as supplier_name', 'created_by.name as created_by_name', 'user_details.*')
@@ -149,6 +133,21 @@ class SupplierController extends Controller
             return response()->json(['status' => 'failed', 'message' => 'Failed to delete supplier: ' . $e->getMessage()]);
         }
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $supplier = Supplier::find($id);
+        if (!$supplier) {
+            return response()->json(['status' => 'failed', 'message' => 'Supplier not found'], 404);
+        }
+        
+        // Update status based on request data
+        $supplier->status = $request->status;
+        $supplier->save();
+
+        return response()->json(['status' => 'success', 'message' => 'Status updated successfully'], 200);
+    }
+
 
     /*
     public function userDetails($id)
