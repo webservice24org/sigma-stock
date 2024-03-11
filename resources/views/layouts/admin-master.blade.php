@@ -92,6 +92,7 @@
     <script src="{{asset('assets/admin/js/font-all.min.js')}}"></script>
     <script src="{{asset('assets/admin/js/customer-categories.js')}}"></script>
     <script src="{{asset('assets/admin/js/suppliers.js')}}"></script>
+    <script src="{{asset('assets/admin/js/department.js')}}"></script>
 
     <script src="{{asset('assets/admin/plugins/chart.min.js')}}"></script>
 

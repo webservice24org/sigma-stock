@@ -140,7 +140,7 @@ class SupplierController extends Controller
         if (!$supplier) {
             return response()->json(['status' => 'failed', 'message' => 'Supplier not found'], 404);
         }
-        
+
         // Update status based on request data
         $supplier->status = $request->status;
         $supplier->save();

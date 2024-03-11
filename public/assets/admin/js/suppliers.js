@@ -264,11 +264,8 @@ $(document).ready(function () {
 
     $("#supplierTable").on("click", ".statusSupplier", function () {
         var supplierId = $(this).data('id');
-
-        // Get the DataTables row corresponding to the clicked statusSupplier button
         var row = $(this).closest('tr');
 
-        // Get the current status from the text content of the status cell
         var currentStatusText = row.find('td:eq(4)').text();
         var currentStatus = currentStatusText.trim().toLowerCase() === 'approved' ? 1 : 0;
 

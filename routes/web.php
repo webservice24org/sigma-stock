@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CustomerCategoryController;
+use App\Http\Controllers\Admin\HrmDepartmentController;
 use App\Http\Controllers\Admin\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,8 @@ Route::middleware([
 
 
     Route::get('/users', [SupplierController::class, 'allUsers']);
+
+    Route::resource('/hrm-departments', HrmDepartmentController::class);
 });
 
 

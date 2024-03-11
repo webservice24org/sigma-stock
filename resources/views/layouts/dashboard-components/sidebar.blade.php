@@ -70,6 +70,23 @@
                     </ul>
                 </li>
                 <li>
+                    <a class="show-cat-btn" href="##">
+                        <span class="icon paper" aria-hidden="true"></span>HRM
+                        <span class="category__btn transparent-btn" title="Open list">
+                            <span class="sr-only">Open list</span>
+                            <span class="icon arrow-down" aria-hidden="true"></span>
+                        </span>
+                    </a>
+                    <ul class="cat-sub-menu">
+                        <li>
+                            <a href="{{route('hrm-departments.index')}}">Hrm Departments</a>
+                        </li>
+                        <li>
+                            <a href="new-page.html">Add new page</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
                     <a href="comments.html">
                         <span class="icon message" aria-hidden="true"></span>
                         Comments
