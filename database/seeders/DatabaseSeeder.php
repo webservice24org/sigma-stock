@@ -53,6 +53,27 @@ class DatabaseSeeder extends Seeder
             'name' => 'Bosta',
             'user_id' => 1,
         ]);
+        //product category
+        \App\Models\ProductCategory::create([
+            'name' => 'Water Piller',
+            'user_id' => 1,
+        ]);
+
+        \App\Models\ProductCategory::create([
+            'name' => 'Concrete Admixture',
+            'user_id' => 1,
+        ]);
+
+        \App\Models\ProductCategory::create([
+            'name' => 'SaltPlast',
+            'user_id' => 1,
+        ]);
+
+        \App\Models\ProductCategory::create([
+            'name' => 'Rust Cleaner',
+            'user_id' => 1,
+        ]);
+
 
     }
 }

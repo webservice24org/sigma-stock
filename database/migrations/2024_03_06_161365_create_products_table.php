@@ -21,7 +21,6 @@ return new class extends Migration {
             $table->float('general_price', 10, 0);
             $table->unsignedBigInteger('category_id')->index('category_id');
             $table->unsignedBigInteger('unit_id')->nullable()->index('unit_id_products');
-            $table->unsignedBigInteger('purchase_id')->nullable()->index('purchase_id');
             $table->unsignedBigInteger('discount')->nullable();
             $table->float('tax_rate', 10, 0)->nullable()->default(0);
             $table->text('image')->nullable();
@@ -38,8 +37,6 @@ return new class extends Migration {
             $table->foreign('unit_id')->references('id')->on('product_units')
                 ->cascadeOnUpdate()->restrictOnDelete();
 
-            $table->foreign('purchase_id')->references('id')->on('purchases')
-                ->cascadeOnUpdate()->restrictOnDelete();
 
             $table->timestamps();
         });

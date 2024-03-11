@@ -33,10 +33,10 @@ Route::middleware([
 
 
     Route::resource('customers', CustomerController::class);
-    Route::resource('customers-categories', CustomerCategoryController::class);
+    Route::resource('customers-categories', CustomerCategoryController::class)->except(['show', 'create']);
 
-    Route::resource('product-categories', ProductCategoryController::class);
-    Route::resource('products', ProductController::class);
+    Route::resource('product-categories', ProductCategoryController::class)->except(['show', 'create']);
+    Route::resource('products', ProductController::class)->except(['create']);
 
 
     Route::resource('suppliers', SupplierController::class);

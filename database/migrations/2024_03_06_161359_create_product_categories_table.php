@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->engine = 'InnoDB';
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->foreign('user_id')->references('id')->on('users')
                 ->cascadeOnUpdate()->restrictOnDelete();
             $table->timestamps();

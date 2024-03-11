@@ -20,13 +20,6 @@ class CustomerController extends Controller
         return view('layouts.pages.customer', compact('customers', 'categories'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.

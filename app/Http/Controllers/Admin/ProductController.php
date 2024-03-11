@@ -3,7 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
+use App\Models\ProductCategory;
+use App\Models\ProductUnit;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Validator;
+use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -12,23 +19,45 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::get();
+
+        $categories = ProductCategory::get();
+        $units = ProductUnit::get();
+
+        return view('layouts.pages.product', compact('products', 'categories', 'units'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        try {
+
+            $validator = Validator::make($request->all(), Product::rules());
+            if ($validator->fails()) {
+                return response()->json(['status' => 'failed', 'message' => $validator->errors()], 422);
+            }
+
+            $requestData = $request->except('image');
+            $requestData['user_id'] = Auth::id();
+
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('uploads/products'), $imageName);
+                $requestData['image'] = 'uploads/products/' . $imageName;
+            }
+
+            $product = Product::create($requestData);
+
+            return response()->json(['status' => 'success', 'message' => 'Product created successfully.', 'product' => $product], 201);
+        } catch (Exception $e) {
+
+            return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
+        }
+
     }
 
     /**
@@ -58,8 +87,22 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        try {
+            $product = Product::findOrFail($id);
+
+            if ($product->image) {
+                $imagePath = public_path($product->image);
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
+            $product->delete();
+
+            return response()->json(['status' => 'success', 'message' => 'Product deleted successfully.'], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
+        }
     }
 }
