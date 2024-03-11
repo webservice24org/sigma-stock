@@ -71,17 +71,43 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        try {
+            $product = Product::findOrFail($id);
+            return response()->json(['status' => 'success', 'product' => $product], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $oldProduct = Product::findOrFail($id);
+            $oldProduct->update([
+                'code' => $request->input('code'),
+                'category_id' => $request->input('category_id'),
+                'unit_id' => $request->input('unit_id'),
+                'type_barcode' => $request->input('type_barcode'),
+                'name' => $request->input('name'),
+                'making_cost' => $request->input('making_cost'),
+                'general_price' => $request->input('general_price'),
+                'discount' => $request->input('discount'),
+                'tax_rate' => $request->input('tax_rate', 0),
+                'note' => $request->input('note'),
+                'stock_alert' => $request->input('stock_alert'),
+            ]);
+
+            $product = $oldProduct->load('category', 'unit', 'createdBy');
+
+            return response()->json(['status' => 'success', 'message' => 'Product updated successfully.', 'product' => $product], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
+        }
     }
 
     /**

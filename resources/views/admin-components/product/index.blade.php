@@ -45,7 +45,7 @@
                                     <td>{{ $product->type_barcode }}</td>
                                     <td>{{ $product->making_cost }}</td>
                                     <td>{{ $product->general_price }}</td>
-                                    <td>{{ $product->unit_id }}</td>
+                                    <td>{{ $product->unit->name }}</td>
                                     <td>{{ $product->discount }}</td>
                                     <td>{{ $product->tax_rate }}</td>
                                     <td>{{ $product->note }}</td>

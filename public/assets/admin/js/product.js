@@ -124,7 +124,7 @@ $(document).ready(function () {
                     if (response.status === 'success') {
                         toastr.success(response.message);
                         const newRowData = [
-                            `<img src="/${response.teacher.photo}" alt="${rresponse.product.image}" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">`,
+                            `<img src="/${response.teacher.photo}" alt="${response.product.image}" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">`,
                             response.product.code,
                             response.product.name,
                             response.product.category.name,
@@ -158,23 +158,27 @@ $(document).ready(function () {
     });
 
     // Edit Category
-    $("#customerTable").on("click", ".editCustomer", function () {
-        var customerId = $(this).data("id");
+    $("#productTable").on("click", ".editProduct", function () {
+        var productId = $(this).data("id");
         $.ajax({
             type: "GET",
-            url: `/customers/${customerId}/edit`,
+            url: `/products/${productId}/edit`,
             dataType: "json",
             success: function (response) {
                 if (response.status === 'success') {
-                    $("#editCustomerModal #category_id").val(response.customer.category_id);
-                    $("#editCustomerModal #shopname").val(response.customer.shopname);
-                    $("#editCustomerModal #trade_license").val(response.customer.trade_license);
-                    $("#editCustomerModal #business_phone").val(response.customer.business_phone);
-                    $("#editCustomerModal #product_rate").val(response.customer.product_rate);
-                    $("#editCustomerModal #tax_rate").val(response.customer.tax_rate);
-                    $("#editCustomerModal #editCustomerId").val(response.customer.id);
+                    $("#editProductModal #category_id").val(response.product.category_id);
+                    $("#editProductModal #unit_id").val(response.product.unit_id);
+                    $("#editProductModal #code").val(response.product.code);
+                    $("#editProductModal #name").val(response.product.name);
+                    $("#editProductModal #type_barcode").val(response.product.type_barcode);
+                    $("#editProductModal #making_cost").val(response.product.making_cost);
+                    $("#editProductModal #general_price").val(response.product.general_price);
+                    $("#editProductModal #discount").val(response.product.discount);
+                    $("#editProductModal #tax_rate").val(response.product.tax_rate);
+                    $("#editProductModal #note").val(response.product.note);
+                    $("#editProductModal #editProductId").val(response.product.id);
 
-                    $("#editCustomerModal").modal('show');
+                    $("#editProductModal").modal('show');
                 } else if (response.status === 'failed') {
                     toastr.error(response.message);
                 }
@@ -185,7 +189,7 @@ $(document).ready(function () {
         });
     });
 
-    $("#editCustomerForm").validate({
+    $("#editProductForm").validate({
         rules: {
             code: {
                 required: true
@@ -261,29 +265,39 @@ $(document).ready(function () {
         submitHandler: function (form) {
             $("#response").empty();
             const formData = $(form).serializeArray();
-            const customerId = $("#editCustomerId").val();
+            const productId = $("#editProductId").val();
 
             $.ajax({
                 type: "PUT",
-                url: `/customers/${customerId}`,
+                url: `/products/${productId}`,
                 data: formData,
                 dataType: "json",
                 success: function (response) {
-                    $("#editCustomerModal").modal("toggle");
+                    $("#editProductModal").modal("toggle");
                     if (response.status === 'success') {
+                        console.log(response.product);
                         toastr.success(response.message);
-                        const rowIndex = customerTable.row($(`#customer_${customerId}`)).index();
+                        const rowIndex = productTable.row($(`#product_${productId}`)).index();
                         const rowData = [
-                            response.customer.id,
-                            response.customer.user.name,
-                            response.customer.user.email,
-                            response.customer.category.name,
-                            response.customer.shopname,
-                            response.customer.business_phone,
-                            `<a href="javascript:void(0)" class="btn btn-success btn-sm editCustomer" data-id="${response.customer.id}}">Edit</a>
-                             <a href="javascript:void(0)" class="btn btn-danger btn-sm deleteCustomer" data-id="${response.customer.id}}">Delete</a>`
+                            `<img src="/${response.teacher.photo}" alt="${response.product.image}" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">`,
+                            response.product.code,
+                            response.product.name,
+                            response.product.category.name,
+                            response.product.type_barcode,
+                            response.product.making_cost,
+                            response.product.general_price,
+                            response.product.unit.name,
+                            response.product.discount,
+                            response.product.tax_rate,
+                            response.product.note,
+                            response.product.stock_alert,
+                            response.product.created_by.name,
+                            `<div class="btn-group">
+                                <a href="javascript:void(0)" class="btn btn-success btn-sm mx-2 editProduct" data-id="${response.product.id}">Edit</a>
+                                <a href="javascript:void(0)" class="btn btn-danger btn-sm deleteProduct" data-id="${response.product.id}">Delete</a>
+                            </div>`
                         ];
-                        customerTable.row(rowIndex).data(rowData).draw(false);
+                        productTable.row(rowIndex).data(rowData).draw(false);
                     } else if (response.status === 'failed') {
                         toastr.error(response.message);
                     }
