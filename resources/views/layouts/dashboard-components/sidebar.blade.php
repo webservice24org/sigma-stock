@@ -1,7 +1,7 @@
 <aside class="sidebar">
     <div class="sidebar-start">
         <div class="sidebar-head">
-            <a href="{{route('dashboard')}}" class="logo-wrapper" title="Home">
+            <a href="{{ route('dashboard') }}" class="logo-wrapper" title="Home">
                 <span class="sr-only">Home</span>
                 <span class="icon logo" aria-hidden="true"></span>
                 <div class="logo-text">
@@ -18,9 +18,10 @@
         <div class="sidebar-body">
             <ul class="sidebar-body-menu">
                 <li>
-                    <a class="active" href="/"><span class="icon home" aria-hidden="true"></span>Dashboard</a>
+                    <a class="active" href="{{ route('dashboard') }}"><span class="icon home"
+                            aria-hidden="true"></span>Dashboard</a>
                 </li>
-                
+
                 <li>
                     <a class="show-cat-btn" href="#">
                         <span class="icon paper" aria-hidden="true"></span>Customers
@@ -31,10 +32,28 @@
                     </a>
                     <ul class="cat-sub-menu">
                         <li>
-                            <a href="{{route('customers-categories.index')}}">Customer Category</a>
+                            <a href="{{ route('customers-categories.index') }}">Customer Category</a>
                         </li>
                         <li>
-                            <a href="new-page.html">Add new page</a>
+                            <a href="{{ route('customers.index') }}">Customers</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="show-cat-btn" href="#">
+                        <span class="icon paper" aria-hidden="true"></span>Products
+                        <span class="category__btn transparent-btn" title="Open list">
+                            <span class="sr-only">Open list</span>
+                            <span class="icon arrow-down" aria-hidden="true"></span>
+                        </span>
+                    </a>
+                    <ul class="cat-sub-menu">
+                        <li>
+                            <a href="{{ route('product-categories.index') }}">Product Category</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('products.index') }}">Products</a>
                         </li>
                     </ul>
                 </li>
@@ -48,7 +67,7 @@
                     </a>
                     <ul class="cat-sub-menu">
                         <li>
-                            <a href="{{route('suppliers.index')}}">Suppliers</a>
+                            <a href="{{ route('suppliers.index') }}">Suppliers</a>
                         </li>
                     </ul>
                 </li>

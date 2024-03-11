@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -21,10 +20,10 @@ return new class extends Migration
             $table->string('business_phone')->nullable();
             $table->float('product_rate');
             $table->float('tax_rate', 10, 0)->nullable()->default(0);
-            
+
             $table->foreign('user_id')->references('id')->on('users')
                 ->cascadeOnUpdate()->restrictOnDelete();
-                
+
             $table->foreign('category_id')->references('id')->on('customer_categories')
                 ->cascadeOnUpdate()->restrictOnDelete();
             $table->timestamps();

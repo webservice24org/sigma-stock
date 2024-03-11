@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\CustomerCategoryController;
+use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\ProductCategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +31,13 @@ Route::middleware([
         return view('layouts.index');
     })->name('dashboard');
 
+
+    Route::resource('customers', CustomerController::class);
     Route::resource('customers-categories', CustomerCategoryController::class);
+
+    Route::resource('product-categories', ProductCategoryController::class);
+    Route::resource('products', ProductController::class);
+
 
     Route::resource('suppliers', SupplierController::class);
 

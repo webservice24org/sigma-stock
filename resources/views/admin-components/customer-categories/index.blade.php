@@ -6,7 +6,8 @@
                     <div class="col-md-6">
                     </div>
                     <div class="col-md-6 text-end">
-                    <a href="javascript:void(0)" class="btn btn-primary" id="createCustomerCategory">Create Category</a>
+                        <a href="javascript:void(0)" class="btn btn-primary" id="createCustomerCategory">Create
+                            Category</a>
 
                     </div>
                 </div>
@@ -17,20 +18,22 @@
                         <thead>
                             <tr>
                                 <th>id</th>
-                                <th>Created By</th>
                                 <th>Customer Category</th>
+                                <th>Created By</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($customerCategories as $item)
-                                <tr id="category_{{$item->id}}">
-                                    <td>{{$item->id}}</td>
-                                    <td>{{$item->createdBy->name}}</td>
-                                    <td>{{$item->cat_name}}</td>
+                            @foreach ($customerCategories as $item)
+                                <tr id="category_{{ $item->id }}">
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->createdBy->name }}</td>
                                     <td>
-                                        <a href="javascript:void(0)" class="btn btn-success editCategory" data-id="{{$item->id}}">Edit</a>
-                                        <a href="javascript:void(0)" class="btn btn-danger deleteCategory" data-id="{{$item->id}}">Delete</a>
+                                        <a href="javascript:void(0)" class="btn btn-success editCategory"
+                                            data-id="{{ $item->id }}">Edit</a>
+                                        <a href="javascript:void(0)" class="btn btn-danger deleteCategory"
+                                            data-id="{{ $item->id }}">Delete</a>
                                     </td>
                                 </tr>
                             @endforeach
