@@ -79,10 +79,11 @@ $(document).ready(function () {
                             response.supplier.trade_license,
                             response.supplier.business_phone,
                             response.supplier.status ? 'Approved' : 'Pending',
-                            '<a href="javascript:void(0)" class="btn btn-success viewSupplier" data-id="' + response.supplier.id + '">View</a>' +
-                            '<a href="javascript:void(0)" class="btn btn-success editSupplier" data-id="' + response.supplier.id + '">Edit</a>' +
-                            '<a href="javascript:void(0)" class="btn btn-success statusSupplier" data-id="' + response.supplier.id + '">Status</a>' +
-                            '<a href="javascript:void(0)" class="btn btn-danger deleteSupplier" data-id="' + response.supplier.id + '">Delete</a>'
+                            '<a href="javascript:void(0)" class="btn btn-success viewSupplier" data-id="' + response.supplier.id + '"><i class="fas fa-eye"></i></a>' +
+                            '<a href="javascript:void(0)" class="btn btn-success editSupplier" data-id="' + response.supplier.id + '"><i class="fas fa-pen-to-square"></i></a>' +
+                            '<a href="javascript:void(0)" class="btn btn-warning statusSupplier" data-id="' + response.supplier.id + '"><i class="fas fa-lock"></i></a>' +
+                            '<a href="javascript:void(0)" class="btn btn-danger deleteSupplier" data-id="' + response.supplier.id + '"><i class="fas fa-trash-can"></i></a>'
+
                         ];
                         $('#supplierTable').DataTable().row.add(newRowData).draw(false);
 
@@ -210,10 +211,11 @@ $(document).ready(function () {
                         response.supplier.trade_license,
                         response.supplier.business_phone,
                         response.supplier.status ? 'Approved' : 'Pending',
-                        '<a href="javascript:void(0)" class="btn btn-success viewSupplier" data-id="' + response.supplier.id + '">View</a>' +
-                        '<a href="javascript:void(0)" class="btn btn-success editSupplier" data-id="' + response.supplier.id + '">Edit</a>' +
-                        '<a href="javascript:void(0)" class="btn btn-success statusSupplier" data-id="' + response.supplier.id + '">Status</a>' +
-                        '<a href="javascript:void(0)" class="btn btn-danger deleteSupplier" data-id="' + response.supplier.id + '">Delete</a>'
+                        '<a href="javascript:void(0)" class="btn btn-success viewSupplier" data-id="' + response.supplier.id + '"><i class="fas fa-eye"></i></a>' +
+                        '<a href="javascript:void(0)" class="btn btn-success editSupplier" data-id="' + response.supplier.id + '"><i class="fas fa-pen-to-square"></i></a>' +
+                        '<a href="javascript:void(0)" class="btn btn-warning statusSupplier" data-id="' + response.supplier.id + '"><i class="fas fa-lock"></i></a>' +
+                        '<a href="javascript:void(0)" class="btn btn-danger deleteSupplier" data-id="' + response.supplier.id + '"><i class="fas fa-trash-can"></i></a>'
+
                     ];
 
                     supplierTable.row(rowIndex).data(newRowData).draw(false);
@@ -259,10 +261,17 @@ $(document).ready(function () {
         });
     });
 
-    $('.statusSupplier').click(function() {
+
+    $("#supplierTable").on("click", ".statusSupplier", function () {
         var supplierId = $(this).data('id');
-        var currentStatus = $(this).data('status');
-    
+
+        // Get the DataTables row corresponding to the clicked statusSupplier button
+        var row = $(this).closest('tr');
+
+        // Get the current status from the text content of the status cell
+        var currentStatusText = row.find('td:eq(4)').text();
+        var currentStatus = currentStatusText.trim().toLowerCase() === 'approved' ? 1 : 0;
+
         var newStatus;
         var confirmMessage;
         if (currentStatus === 0) {
@@ -272,7 +281,7 @@ $(document).ready(function () {
             newStatus = 0;
             confirmMessage = "Are you sure you want to make pending?";
         }
-    
+
         Swal.fire({
             title: 'Confirmation',
             text: confirmMessage,
@@ -287,15 +296,15 @@ $(document).ready(function () {
                     url: '/suppliers/' + supplierId + '/status',
                     data: { status: newStatus },
                     dataType: 'json',
-                    success: function(response) {
+                    success: function (response) {
                         toastr.success(response.message);
-                        
-                        var rowIndex = supplierTable.row($('#supplier_' + supplierId)).index();
+
+                        var rowIndex = supplierTable.row(row).index();
                         var rowData = supplierTable.row(rowIndex).data();
-                        rowData[4] = newStatus === 1 ? 'Approved' : 'Pending'; // Update status column
+                        rowData[4] = newStatus === 1 ? 'Approved' : 'Pending';
                         supplierTable.row(rowIndex).data(rowData).draw(false);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('An error occurred while processing your request.');
                         console.error('Error:', xhr.responseText);
                         toastr.error('An error occurred while processing your request.');
@@ -304,8 +313,9 @@ $(document).ready(function () {
             }
         });
     });
-    
-    
+
+
+
 
 
 

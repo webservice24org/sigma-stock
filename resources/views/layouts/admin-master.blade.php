@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css"
         referrerpolicy="no-referrer" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.4/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('assets/admin/css/font-all.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/admin/css/fontawesome.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/admin/css/style.css')}}">
 
     <!-- js cdn -->
@@ -87,6 +89,7 @@
     <script type="text/javascript">
         const baseUrl = "{{url('/')}}";
     </script>
+    <script src="{{asset('assets/admin/js/font-all.min.js')}}"></script>
     <script src="{{asset('assets/admin/js/customer-categories.js')}}"></script>
     <script src="{{asset('assets/admin/js/suppliers.js')}}"></script>
 

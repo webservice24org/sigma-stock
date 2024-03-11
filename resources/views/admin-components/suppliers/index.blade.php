@@ -34,16 +34,20 @@
                                     <td>{{$item->business_phone}}</td>
                                     <td>
                                         @if ($item->status == 0)
-                                            <span class="badge bg-warning">Pending</span>
+                                            <span class="badge bg-danger">Pending</span>
                                         @else
                                             <span class="badge bg-success">Approved</span>
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="javascript:void(0)" class="btn btn-success viewSupplier" data-id="{{$item->id}}">View</a>
-                                        <a href="javascript:void(0)" class="btn btn-success editSupplier" data-id="{{$item->id}}">Edit</a>
-                                        <a href="javascript:void(0)" class="btn btn-success statusSupplier" data-id="{{$item->id}}">Status</a>
-                                        <a href="javascript:void(0)" class="btn btn-danger deleteSupplier" data-id="{{$item->id}}">Delete</a>
+                                        <a href="javascript:void(0)" class="btn btn-success viewSupplier" data-id="{{$item->id}}"><i class="fa-solid fa-eye"></i></a>
+                                        <a href="javascript:void(0)" class="btn btn-primary editSupplier" data-id="{{$item->id}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                        @if ($item->status == 0)
+                                        <a href="javascript:void(0)" class="btn btn-warning statusSupplier" data-id="{{$item->id}}"><i class="fa-solid fa-lock"></i></a>
+                                        @else
+                                        <a href="javascript:void(0)" class="btn btn-success statusSupplier" data-id="{{$item->id}}"><i class="fa-solid fa-lock-open"></i></a>
+                                        @endif
+                                        <a href="javascript:void(0)" class="btn btn-danger deleteSupplier" data-id="{{$item->id}}"><i class="fa-solid fa-trash-can"></i></a>
                                     </td>
                                 </tr>
                             @endforeach

@@ -1,14 +1,14 @@
 $.ajaxSetup({
-  headers: {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-  }
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
 });
 
 $(document).ready(function () {
 
     //Toaster body customization
     toastr.options = {
-        closeButton: true, 
+        closeButton: true,
         progressBar: true,
         positionClass: 'toast-top-right',
         showDuration: 300,
@@ -24,9 +24,9 @@ $(document).ready(function () {
 
     const customerCategoryTable = $("#customerCategoryTable").DataTable({});
 
-    $('#createCustomerCategory').on('click', function(){
-       $('#createCustomerCategoryModal').modal('toggle');
-       
+    $('#createCustomerCategory').on('click', function () {
+        $('#createCustomerCategoryModal').modal('toggle');
+
     });
     $('#customerCategoryForm').validate({
         rules: {
@@ -41,7 +41,7 @@ $(document).ready(function () {
                 minlength: jQuery.validator.format("At least {0} characters required!")
             }
         },
-        submitHandler: function(form) {
+        submitHandler: function (form) {
             $("#response").empty();
             const formData = $(form).serializeArray();
             $.ajax({
@@ -49,7 +49,7 @@ $(document).ready(function () {
                 url: "/customers-categories",
                 data: formData,
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     $(form).trigger('reset');
                     $('#createCustomerCategoryModal').modal('toggle');
                     if (response.status === 'success') {
@@ -66,17 +66,17 @@ $(document).ready(function () {
                         toastr.error(response.message);
                     }
                 },
-                
-                error: function(xhr) {
+
+                error: function (xhr) {
                     toastr.error('An error occurred while processing your request.');
                     console.error('An error occurred:', xhr.responseText);
                 }
             });
         }
-        
+
     });
-    
-   // Edit Category
+
+    // Edit Category
     $("#customerCategoryTable").on("click", ".editCategory", function () {
         var categoryId = $(this).data("id");
         $.ajax({
@@ -110,22 +110,22 @@ $(document).ready(function () {
                 required: "Please enter the name of the Customer Category",
                 minlength: jQuery.validator.format("At least {0} characters required!")
             }
-        }, 
-        submitHandler: function(form) {
+        },
+        submitHandler: function (form) {
             $("#response").empty();
             const formData = $(form).serializeArray();
             const categoryId = $("#editCategoryId").val();
-            
+
             $.ajax({
                 type: "PUT",
-                url: `/customers-categories/${categoryId}`, 
+                url: `/customers-categories/${categoryId}`,
                 data: formData,
                 dataType: "json",
-                success: function(response) {
+                success: function (response) {
                     $("#editCustomerCategoryModal").modal("toggle");
                     if (response.status === 'success') {
                         toastr.success(response.message);
-                        
+
                         const rowIndex = customerCategoryTable.row($(`#category_${categoryId}`)).index();
                         const rowData = [
                             response.category.id,
@@ -144,10 +144,10 @@ $(document).ready(function () {
                 }
             });
         }
-        
+
     });
- 
-    $("#customerCategoryTable").on("click", ".deleteCategory", function() {
+
+    $("#customerCategoryTable").on("click", ".deleteCategory", function () {
         var categoryId = $(this).data("id");
         Swal.fire({
             title: 'Are you sure?',
@@ -163,7 +163,7 @@ $(document).ready(function () {
                     type: "DELETE",
                     url: `/customers-categories/${categoryId}`,
                     dataType: "json",
-                    success: function(response) {
+                    success: function (response) {
                         if (response.status === 'success') {
                             customerCategoryTable.row($(`#category_${categoryId}`).closest('tr')).remove().draw(false);
                             toastr.success(response.message);
@@ -171,13 +171,13 @@ $(document).ready(function () {
                             toastr.error(response.message);
                         }
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         toastr.error('An error occurred while deleting the category.');
                     }
                 });
             }
         });
     });
-    
+
 
 });
