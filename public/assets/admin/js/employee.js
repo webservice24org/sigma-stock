@@ -51,7 +51,7 @@ $(document).ready(function () {
             }
         });
     });
-    
+
 
 
 
@@ -65,7 +65,7 @@ $(document).ready(function () {
             },
             salary_amount: {
                 required: true,
-                minlength:2
+                minlength: 2
             },
             joining_date: {
                 required: true
@@ -105,7 +105,7 @@ $(document).ready(function () {
                             response.employee.hrm_department_id,
                             response.employee.joining_date,
                             response.employee.status ? 'Active' : 'Inactive',
-        
+
                             '<a href="javascript:void(0)" class="btn btn-success viewEmployee" data-id="' + response.employee.id + '"><i class="fas fa-eye"></i></a>' +
                             '<a href="javascript:void(0)" class="btn btn-success editEmployee" data-id="' + response.employee.id + '"><i class="fas fa-pen-to-square"></i></a>' +
                             '<a href="javascript:void(0)" class="btn btn-warning statusEmployee" data-id="' + response.employee.id + '"><i class="fas fa-lock"></i></a>' +
@@ -115,7 +115,7 @@ $(document).ready(function () {
                         location.reload();
                     } else if (xhr.status === 409) {
                         toastr.error(response.message);
-                    } 
+                    }
                 },
                 error: function (xhr, status, error) {
                     toastr.error('An error occurred while processing your request.');
@@ -123,8 +123,53 @@ $(document).ready(function () {
                 }
             });
         }
-        
+
     });
+
+
+    $('#employeeTable').on('click', '.viewEmployee', function () {
+        var employeeId = $(this).data('id');
+        $.ajax({
+            type: 'GET',
+            url: '/employees/' + employeeId,
+            dataType: 'json',
+            success: function (response) {
+                if (response.status === 'success') {
+
+                    if (response.employee.profile_photo_path) {
+                        $("#viewEmployeeModal #profile_photo").attr("src", response.employee.profile_photo_path);
+                    } else {
+                        $("#viewEmployeeModal #profile_photo").attr("src", '/assets/admin/img/users/default.png');
+                    }
+                    var employee = response.employee;
+                    $('#viewEmployeeModal #employeeName').text(employee.user_name);
+                    $('#viewEmployeeModal #employeeId').text(employee.id);
+                    $('#viewEmployeeModal #departmentName').text(employee.department_name);
+                    $('#viewEmployeeModal #salaryAmount').text(employee.salary_amount);
+                    $('#viewEmployeeModal #joiningDate').text(employee.joining_date);
+                    $('#viewEmployeeModal #regineDate').text(employee.regine_date);
+                    $('#viewEmployeeModal #email').text(employee.email);
+                    $('#viewEmployeeModal #phone').text(employee.phone);
+                    $('#viewEmployeeModal #address').text(employee.address);
+                    $('#viewEmployeeModal #dob').text(employee.dob);
+                    $('#viewEmployeeModal #nid').text(employee.nid);
+                    $('#viewEmployeeModal #bankName').text(employee.bank_name);
+                    $('#viewEmployeeModal #accountHolder').text(employee.account_holder);
+                    $('#viewEmployeeModal #accountNnumber').text(employee.account_number);
+
+                    $('#viewEmployeeModal').modal('toggle');
+                } else {
+                    toastr.error(response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('An error occurred while fetching employee data.');
+                console.error('Error:', xhr.responseText);
+                toastr.error('An error occurred while fetching employee data.');
+            }
+        });
+    });
+
 
 
     $("#employeeTable").on("click", ".deleteEmployee", function () {

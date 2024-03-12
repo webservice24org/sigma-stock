@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\HrmDepartment;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -48,16 +49,16 @@ class EmployeeController extends Controller
                 'joining_date' => 'required|date',
                 'note' => 'nullable|string',
             ]);
-    
+
             $employee = new Employee();
             $employee->user_id = $validatedData['user_id'];
             $employee->hrm_department_id = $validatedData['hrm_department_id'];
             $employee->salary_amount = $validatedData['salary_amount'];
             $employee->joining_date = $validatedData['joining_date'];
             $employee->note = $validatedData['note'];
-    
+
             $employee->save();
-    
+
             return response()->json(['status' => 'success', 'message' => 'Employee created successfully', 'employee' => $employee], 201);
         } catch (ValidationException $e) {
             return response()->json(['status' => 'failed', 'message' => $e->validator->errors()->first()], 422);
@@ -70,17 +71,51 @@ class EmployeeController extends Controller
             return response()->json(['status' => 'failed', 'message' => $ex->getMessage()], 500);
         }
     }
-    
+
 
 
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        try {
+            $employee = Employee::select(
+                'employees.id',
+                'employees.user_id',
+                'employees.hrm_department_id',
+                'employees.salary_amount',
+                'employees.joining_date',
+                'employees.status',
+                'employees.note',
+                'employees.regine_date',
+                'users.name as user_name',
+                'users.email',
+                'users.profile_photo_path',
+                'user_details.phone',
+                'user_details.address',
+                'user_details.dob',
+                'user_details.nid',
+                'user_details.bank_name',
+                'user_details.account_holder',
+                'user_details.account_number',
+                'hrm_departments.department_name'
+            )
+                ->join('users', 'employees.user_id', '=', 'users.id')
+                ->leftJoin('user_details', 'users.id', '=', 'user_details.user_id')
+                ->leftJoin('hrm_departments', 'employees.hrm_department_id', '=', 'hrm_departments.id')
+                ->findOrFail($id);
+
+            return response()->json(['status' => 'success', 'employee' => $employee], 200);
+        } catch (ModelNotFoundException $ex) {
+            return response()->json(['status' => 'failed', 'message' => 'Employee data not found.'], 404);
+        } catch (Exception $ex) {
+            return response()->json(['status' => 'failed', 'message' => $ex->getMessage()], 500);
+        }
     }
+
+
 
     /**
      * Show the form for editing the specified resource.

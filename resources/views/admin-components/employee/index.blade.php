@@ -30,7 +30,7 @@
                                     <td>{{$item->id}}</td>
                                     <td>{{$item->user->name}}</td>
                                     <td>{{$item->department->department_name}}</td>
-                                    <td>{{$item->joining_date}}</td>
+                                    <td>{{ date('d-m-Y', strtotime($item->joining_date)) }}</td>
                                     <td>
                                         @if ($item->status == 0)
                                             <span class="badge bg-danger">Pending</span>

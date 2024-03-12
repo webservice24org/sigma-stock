@@ -2,6 +2,7 @@
 @section('admin')
     @include('admin-components.employee.index')
     @include('admin-components.employee.create')
+    @include('admin-components.employee.view')
     @include('admin-components.employee.edit')
     
 @endsection
