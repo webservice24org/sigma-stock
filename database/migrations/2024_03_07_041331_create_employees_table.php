@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->unique();
             $table->unsignedBigInteger('hrm_department_id');
             $table->integer('salary_amount');
             $table->dateTime('joining_date');
@@ -25,7 +25,7 @@ return new class extends Migration
                 
             $table->text('note')->nullable();
 
-            $table->dateTime('regine_date');
+            $table->dateTime('regine_date')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')
                 ->cascadeOnUpdate()->restrictOnDelete();

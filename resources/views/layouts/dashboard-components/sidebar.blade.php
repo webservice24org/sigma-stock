@@ -82,7 +82,7 @@
                             <a href="{{route('hrm-departments.index')}}">Hrm Departments</a>
                         </li>
                         <li>
-                            <a href="new-page.html">Add new page</a>
+                            <a href="{{route('employees.index')}}">Employee</a>
                         </li>
                     </ul>
                 </li>

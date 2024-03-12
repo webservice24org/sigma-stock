@@ -5,6 +5,7 @@ $.ajaxSetup({
 });
 
 $(document).ready(function () {
+    
     const supplierTable = $('#supplierTable').DataTable();
     $('#supplierCreate').on('click', function () {
         $('#createSupplierModal').modal('toggle');
