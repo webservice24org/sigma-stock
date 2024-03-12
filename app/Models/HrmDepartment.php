@@ -9,4 +9,8 @@ class HrmDepartment extends Model
 {
     use HasFactory;
     protected $fillable = ['user_id', 'department_name'];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

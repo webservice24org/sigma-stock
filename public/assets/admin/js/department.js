@@ -49,7 +49,7 @@ $(document).ready(function () {
 
                         ];
                         $('#departmentTable').DataTable().row.add(newRowData).draw(false);
-
+                        location.reload();
 
                     } else if (response.status === 'failed') {
                         toastr.error(response.message);

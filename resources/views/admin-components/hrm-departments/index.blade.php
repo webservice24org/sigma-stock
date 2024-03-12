@@ -26,7 +26,7 @@
                             @foreach ($departments as $item)
                                 <tr id="department_{{$item->id}}">
                                     <td>{{$item->id}}</td>
-                                    <td>{{$item->user_id}}</td>
+                                    <td>{{$item->user->name}}</td>
                                     <td>{{$item->department_name}}</td>
                                     
                                     <td>
