@@ -158,6 +158,11 @@ $(document).ready(function () {
                     $('#viewEmployeeModal #accountNnumber').text(employee.account_number);
 
                     $('#viewEmployeeModal').modal('toggle');
+
+                    $('#printEmployee').click(function () {
+                        window.print();
+                    });
+
                 } else {
                     toastr.error(response.message);
                 }

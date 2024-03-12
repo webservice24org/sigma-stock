@@ -60,6 +60,7 @@
 
           <div class="modal-footer mb-2">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="printEmployee">Print</button>
           </div>
         </div>
       
