@@ -120,18 +120,47 @@ class EmployeeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $employee = Employee::with('department')->find($id);
+        return response()->json(['employee' => $employee], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            // $request->validate([
+            //     'user_id' => 'required|exists:users,id|',
+            //     'hrm_department_id' => 'required|exists:hrm_departments,id',
+            //     'salary_amount' => 'required|numeric|min:0',
+            //     'joining_date' => 'nullable|date',
+            //     'regine_date' => 'nullable|date',
+            //     'note' => 'nullable|string',
+            // ]);
+            
+            $employee = Employee::findOrFail($id);
+            $employee->user_id = $request->user_id;
+            $employee->hrm_department_id = $request->hrm_department_id;
+            $employee->salary_amount = $request->salary_amount;
+            //$employee->joining_date = $request->joining_date;
+            $employee->regine_date = $request->regine_date;
+            $employee->note = $request->note;
+            
+            $employee->save();
+            
+            return response()->json(['status' => 'success', 'message' => 'Employee updated successfully', 'employee' => $employee], 200);
+        } catch (ValidationException $e) {
+            return response()->json(['status' => 'failed', 'message' => $e->validator->errors()->first()], 422);
+        } catch (ModelNotFoundException $ex) {
+            return response()->json(['status' => 'failed', 'message' => 'Employee not found.'], 404);
+        } catch (Exception $ex) {
+            return response()->json(['status' => 'failed', 'message' => $ex->getMessage()], 500);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.

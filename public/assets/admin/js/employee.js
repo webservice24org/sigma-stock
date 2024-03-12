@@ -209,6 +209,88 @@ $(document).ready(function () {
         });
     });
 
+    
+    
+
+    $('#employeeTable').on('click', '.editEmployee', function() {
+        var employeeId = $(this).data('id');
+        $.ajax({
+            type: 'GET',
+            url: '/departments',
+            dataType: 'json',
+            success: function(departmentResponse) {
+                $('#editEmployeeModal #department_id').empty(); 
+                departmentResponse.departments.forEach(function(department) {
+                    $('#editEmployeeModal #department_id').append($('<option>', {
+                        value: department.id,
+                        text: department.department_name
+                    }));
+                });
+    
+                $.ajax({
+                    type: 'GET',
+                    url: '/employees/' + employeeId,
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#editEmployeeModal #employeeId').val(response.employee.id);
+                        $('#editEmployeeModal #user_id').val(response.employee.user_id);
+                        $('#editEmployeeModal #userName').text(response.employee.user_name);
+                        $('#editEmployeeModal #department_id').val(response.employee.hrm_department_id);
+                        $('#editEmployeeModal #salary_amount').val(response.employee.salary_amount);
+                    
+                        $('#editEmployeeModal #note').val(response.employee.note);
+                        
+                        $('#editEmployeeModal').modal('show'); 
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching employee data:', error);
+                        
+                    }
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching departments:', error);
+                
+            }
+        });
+    });
+    
+
+
+    $('#editEmployeeForm').submit(function(event) {
+        event.preventDefault(); 
+        
+        var formData = $(this).serialize(); 
+        const employeeId = $("#employeeId").val();
+        $.ajax({
+            type: 'PUT',
+            url: '/employees/' + $('#editEmployeeModal #employeeId').val(), 
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                $('#editEmployeeModal').modal('hide'); 
+                const rowIndex = employeeTable.row($(`#employee_${employeeId}`)).index();
+                const newRowData = [
+                    response.employee.id,
+                    response.employee.user_id,
+                    response.employee.hrm_department_id,
+                    response.employee.joining_date,
+                    response.employee.status ? 'Active' : 'Inactive',
+
+                    '<a href="javascript:void(0)" class="btn btn-success viewEmployee" data-id="' + response.employee.id + '"><i class="fas fa-eye"></i></a>' +
+                    '<a href="javascript:void(0)" class="btn btn-success editEmployee" data-id="' + response.employee.id + '"><i class="fas fa-pen-to-square"></i></a>' +
+                    '<a href="javascript:void(0)" class="btn btn-warning statusEmployee" data-id="' + response.employee.id + '"><i class="fas fa-lock"></i></a>' +
+                    '<a href="javascript:void(0)" class="btn btn-danger deleteEmployee" data-id="' + response.employee.id + '"><i class="fas fa-trash-can"></i></a>'
+                ];
+                employeeTable.row(rowIndex).data(newRowData).draw(false);
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error updating employee:', error);
+                
+            }
+        });
+    });
 
 
 });
