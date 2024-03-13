@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\HrmDepartmentController;
 use App\Http\Controllers\Admin\ProductUnitController;
 use App\Http\Controllers\Admin\PurchaseCategoryController;
+use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\WarehouseController;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +52,9 @@ Route::middleware([
     Route::resource('/product-units', ProductUnitController::class);
 
     Route::resource('/purchase-categories', PurchaseCategoryController::class);
+
+    Route::resource('/purchases', PurchaseController::class);
+    Route::get('/all-suppliers', [PurchaseController::class, 'allSuppliers'])->name('allSuppliers');
 
 });
 

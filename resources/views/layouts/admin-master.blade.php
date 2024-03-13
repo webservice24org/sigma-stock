@@ -97,6 +97,7 @@
     <script src="{{asset('assets/admin/js/warehouse.js')}}"></script>
     <script src="{{asset('assets/admin/js/product-units.js')}}"></script>
     <script src="{{asset('assets/admin/js/purchase-categories.js')}}"></script>
+    <script src="{{asset('assets/admin/js/purchase.js')}}"></script>
 
     <script src="{{asset('assets/admin/plugins/chart.min.js')}}"></script>
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Purchase;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
@@ -12,7 +14,14 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        //
+        $purchases = Purchase::all();
+        return view("layouts.pages.purchases", compact("purchases"));
+    }
+
+    public function allSuppliers()
+    {
+        $allSuppliers = Supplier::all();
+        return response()->json(['allSuppliers' => $allSuppliers]);
     }
 
     /**

@@ -96,6 +96,48 @@
             <ul class="sidebar-body-menu">
                 <li>
                     <a class="show-cat-btn" href="##">
+                        <span class="icon category" aria-hidden="true"></span>Purchase
+                        <span class="category__btn transparent-btn" title="Open list">
+                            <span class="sr-only">Open list</span>
+                            <span class="icon arrow-down" aria-hidden="true"></span>
+                        </span>
+                    </a>
+                    <ul class="cat-sub-menu">
+                        <li>
+                            <a href="{{route('product-units.index')}}">Product Units</a>
+                        </li>
+                        <li>
+                            <a href="{{route('purchase-categories.index')}}">Purchase Category</a>
+                        </li>
+                        <li>
+                            <a href="{{route('purchases.index')}}">Purchase</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="show-cat-btn" href="##">
+                        <span class="icon user-3" aria-hidden="true"></span>Purchase
+                        <span class="category__btn transparent-btn" title="Open list">
+                            <span class="sr-only">Open list</span>
+                            <span class="icon arrow-down" aria-hidden="true"></span>
+                        </span>
+                    </a>
+                    <ul class="cat-sub-menu">
+                        <li>
+                            <a href="users-01.html">Users-01</a>
+                        </li>
+                        <li>
+                            <a href="users-02.html">Users-02</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="##"><span class="icon setting" aria-hidden="true"></span>Settings</a>
+                </li>
+            </ul>
+            <ul class="sidebar-body-menu">
+                <li>
+                    <a class="show-cat-btn" href="##">
                         <span class="icon category" aria-hidden="true"></span>Appearance
                         <span class="category__btn transparent-btn" title="Open list">
                             <span class="sr-only">Open list</span>
@@ -105,12 +147,6 @@
                     <ul class="cat-sub-menu">
                         <li>
                             <a href="{{route('warehouses.index')}}">Warehouses</a>
-                        </li>
-                        <li>
-                            <a href="{{route('product-units.index')}}">Product Units</a>
-                        </li>
-                        <li>
-                            <a href="{{route('purchase-categories.index')}}">Purchase Category</a>
                         </li>
                     </ul>
                 </li>

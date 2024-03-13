@@ -9,8 +9,7 @@ $(document).ready(function () {
     const purchaseCategoryTable = $('#purchaseCategoryTable').DataTable();
     $('#purchaseCategoryCreate').on('click', function () {
         $('#createPurchaseCatModal').modal('toggle');
-    })
-
+    });
 
     $('#purchaseCatForm').validate({
         rules: {
