@@ -97,11 +97,8 @@
             <span class="system-menu__title">system</span>
             <ul class="sidebar-body-menu">
                 <li>
-                    <a href="appearance.html"><span class="icon edit" aria-hidden="true"></span>Appearance</a>
-                </li>
-                <li>
                     <a class="show-cat-btn" href="##">
-                        <span class="icon category" aria-hidden="true"></span>Extentions
+                        <span class="icon category" aria-hidden="true"></span>Appearance
                         <span class="category__btn transparent-btn" title="Open list">
                             <span class="sr-only">Open list</span>
                             <span class="icon arrow-down" aria-hidden="true"></span>
@@ -109,7 +106,7 @@
                     </a>
                     <ul class="cat-sub-menu">
                         <li>
-                            <a href="extention-01.html">Extentions-01</a>
+                            <a href="{{route('warehouses.index')}}">Warehouses</a>
                         </li>
                         <li>
                             <a href="extention-02.html">Extentions-02</a>
