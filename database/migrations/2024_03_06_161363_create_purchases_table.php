@@ -21,11 +21,14 @@ return new class extends Migration {
 
             $table->date('date');
             $table->float('tax_rate', 10, 0)->nullable()->default(0);
-            $table->float('TaxNet', 10, 0)->nullable()->default(0);
 
-            $table->tinyInteger('status')
-                ->default(0)
-                ->comment('0=Pending, 1=Approved');
+            $table->float('discount', 10, 0)->nullable()->default(0);
+			$table->float('shipping_cost', 10, 0)->nullable()->default(0);
+            $table->integer('purchase_qty');
+			$table->float('grand_total', 10, 0);
+			$table->float('paid_amount', 10, 0)->default(0);
+			$table->float('due_amount', 10, 0)->default(0);
+            
             $table->string('payment_statut', 192)
                 ->default(0)
                 ->comment('0=Partial, 1=Paid');

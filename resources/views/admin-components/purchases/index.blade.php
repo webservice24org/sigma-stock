@@ -28,7 +28,13 @@
                                 <tr id="purchase_{{$item->id}}">
                                     <td>{{$item->id}}</td>
                                     <td>{{ date('d-m-Y', strtotime($item->date)) }}</td>
-                                    <td>{{$item->payment_statut}}</td>
+                                    <td>
+                                        @if ($item->payment_statut == 0)
+                                            <span class="badge bg-danger">Partial</span>
+                                        @else
+                                            <span class="badge bg-success">Paid</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         @if ($item->status == 0)
                                             <span class="badge bg-danger">Pending</span>

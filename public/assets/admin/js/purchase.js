@@ -26,64 +26,81 @@ $(document).ready(function () {
                 console.error('Error fetching suppliers:', error);
             }
         });
+        $.ajax({
+            type: 'GET',
+            url: '/all-warehouses',
+            dataType: 'json',
+            success: function (response) {
+                $('#warehouse_id').empty();
+                $.each(response.allwarehouses, function (index, allwarehouses) {
+                    $('#warehouse_id').append($('<option>', {
+                        value: allwarehouses.id,
+                        text: allwarehouses.warehouse_name
+                    }));
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching Warehouse:', error);
+            }
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: '/all-purchase-cats',
+            dataType: 'json',
+            success: function (response) {
+                $('#purchase_category_id').empty();
+                $.each(response.allPurchseCats, function (index, allPurchseCats) {
+                    $('#purchase_category_id').append($('<option>', {
+                        value: allPurchseCats.id,
+                        text: allPurchseCats.purchase_cat_name
+                    }));
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching Warehouse:', error);
+            }
+        });
+        $.ajax({
+            type: 'GET',
+            url: '/all-units',
+            dataType: 'json',
+            success: function (response) {
+                $('#unit_id').empty();
+                $.each(response.allUnits, function (index, allUnits) {
+                    $('#unit_id').append($('<option>', {
+                        value: allUnits.id,
+                        text: allUnits.unit_name
+                    }));
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching Warehouse:', error);
+            }
+        });
 
         $('#createPurchaseModal').modal('toggle');
     });
 
 
-
-    $('#createEmployeeModal').on('shown.bs.modal', function () {
-        $.ajax({
-            type: 'GET',
-            url: '/departments',
-            dataType: "json",
-            success: function (response) {
-                $('#hrm_department_id').empty();
-                $.each(response.departments, function (index, department) {
-                    $('#hrm_department_id').append($('<option>', {
-                        value: department.id,
-                        text: department.department_name
-                    }));
-                });
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching Departments:', error);
-            }
-        });
-    });
-
-
-
-
-    $('#employeeForm').validate({
+    $('#purchaseForm').validate({
         rules: {
-            user_id: {
+            supplier_id: {
                 required: true
-            },
-            hrm_department_id: {
+            },warehouse_id: {
                 required: true
-            },
-            salary_amount: {
-                required: true,
-                minlength: 2
-            },
-            joining_date: {
+            },purchase_category_id: {
                 required: true
-            }
-        },
-        messages: {
-            user_id: {
-                required: "Please Select User"
-            },
-            hrm_department_id: {
-                required: "Please Department"
-            },
-            salary_amount: {
-                required: "Please enter Salary Amount",
-                minlength: jQuery.validator.format("At least {0} characters required!")
-            },
-            joining_date: {
-                required: "Please Select Joining Date"
+            },unit_id: {
+                required: true
+            },date: {
+                required: true
+            },tax_rate: {
+                required: true
+            },payment_statut: {
+                required: true
+            },notes: {
+                required: true
             }
         },
         submitHandler: function (form) {
@@ -91,28 +108,26 @@ $(document).ready(function () {
             const formData = $(form).serializeArray();
             $.ajax({
                 type: "POST",
-                url: "/employees",
+                url: "/purchases",
                 data: formData,
                 dataType: "json",
                 success: function (response, status, xhr) {
                     $(form).trigger('reset');
-                    $('#createEmployeeModal').modal('toggle');
+                    $('#createPurchaseModal').modal('toggle');
                     if (xhr.status === 201) {
                         toastr.success(response.message);
                         const newRowData = [
-                            response.employee.id,
-                            response.employee.user_id,
-                            response.employee.hrm_department_id,
-                            response.employee.joining_date,
-                            response.employee.status ? 'Active' : 'Inactive',
+                            response.purchase.id,
+                            response.purchase.date.split(' ')[0],
+                            response.purchase.payment_statut ? 'Paid' : 'Partial',
+                            response.purchase.status ? 'Approved' : 'Pending',
 
-                            '<a href="javascript:void(0)" class="btn btn-success viewEmployee" data-id="' + response.employee.id + '"><i class="fas fa-eye"></i></a>' +
-                            '<a href="javascript:void(0)" class="btn btn-success editEmployee" data-id="' + response.employee.id + '"><i class="fas fa-pen-to-square"></i></a>' +
-                            '<a href="javascript:void(0)" class="btn btn-warning statusEmployee" data-id="' + response.employee.id + '"><i class="fas fa-lock"></i></a>' +
-                            '<a href="javascript:void(0)" class="btn btn-danger deleteEmployee" data-id="' + response.employee.id + '"><i class="fas fa-trash-can"></i></a>'
+                            '<a href="javascript:void(0)" class="btn btn-success viewPurchase" data-id="' + response.purchase.id + '"><i class="fas fa-eye"></i></a>' +
+                            '<a href="javascript:void(0)" class="btn btn-success editPurchase" data-id="' + response.purchase.id + '"><i class="fas fa-pen-to-square"></i></a>' +
+                            '<a href="javascript:void(0)" class="btn btn-warning statusPurchase" data-id="' + response.purchase.id + '"><i class="fas fa-lock"></i></a>' +
+                            '<a href="javascript:void(0)" class="btn btn-danger deletePurchase" data-id="' + response.purchase.id + '"><i class="fas fa-trash-can"></i></a>'
                         ];
-                        $('#employeeTable').DataTable().row.add(newRowData).draw(false);
-                        location.reload();
+                        $('#purchaseTable').DataTable().row.add(newRowData).draw(false);
                     } else if (xhr.status === 409) {
                         toastr.error(response.message);
                     }

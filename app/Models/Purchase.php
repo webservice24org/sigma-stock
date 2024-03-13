@@ -16,14 +16,30 @@ class Purchase extends Model
         'unit_id',
         'date',
         'tax_rate',
-        'TaxNet',
-        'status',
         'payment_statut',
         'notes',
+        'discount',
+        'shipping_cost',
+        'purchase_qty',
+        'grand_total',
+        'paid_amount',
+        'due_amount',
     ];
 
     public function allSuppliers()
     {
         return $this->belongsToMany(Supplier::class, 'supplier_id');
+    }
+    public function allwarehouses()
+    {
+        return $this->belongsToMany(Warehouse::class, 'warehouse_id');
+    }
+    public function allPurchseCats()
+    {
+        return $this->belongsToMany(PurchaseCategory::class, 'purchase_category_id');
+    }
+    public function allUnits()
+    {
+        return $this->belongsToMany(ProductUnit::class, 'unit_id');
     }
 }
