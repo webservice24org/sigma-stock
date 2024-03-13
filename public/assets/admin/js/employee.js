@@ -176,42 +176,6 @@ $(document).ready(function () {
     });
 
 
-
-    $("#employeeTable").on("click", ".deleteEmployee", function () {
-        var employeeId = $(this).data("id");
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: "DELETE",
-                    url: `/employees/${employeeId}`,
-                    dataType: "json",
-                    success: function (response) {
-                        if (response.status === 'success') {
-                            employeeTable.row($(`#employee_${employeeId}`).closest('tr')).remove().draw(false);
-                            toastr.success(response.message);
-                        } else if (response.status === 'failed') {
-                            toastr.error(response.message);
-                        }
-                    },
-                    error: function (xhr) {
-                        toastr.error('An error occurred while deleting the Employee.');
-                    }
-                });
-            }
-        });
-    });
-
-    
-    
-
     $('#employeeTable').on('click', '.editEmployee', function() {
         var employeeId = $(this).data('id');
         $.ajax({
@@ -288,6 +252,87 @@ $(document).ready(function () {
             error: function(xhr, status, error) {
                 console.error('Error updating employee:', error);
                 
+            }
+        });
+    });
+
+    $("#employeeTable").on("click", ".deleteEmployee", function () {
+        var employeeId = $(this).data("id");
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "DELETE",
+                    url: `/employees/${employeeId}`,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            employeeTable.row($(`#employee_${employeeId}`).closest('tr')).remove().draw(false);
+                            toastr.success(response.message);
+                        } else if (response.status === 'failed') {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function (xhr) {
+                        toastr.error('An error occurred while deleting the Employee.');
+                    }
+                });
+            }
+        });
+    });
+
+    $("#employeeTable").on("click", ".statusEmployee", function () {
+        var employeeId = $(this).data('id');
+        var row = $(this).closest('tr');
+
+        var currentStatusText = row.find('td:eq(4)').text();
+        var currentStatus = currentStatusText.trim().toLowerCase() === 'active' ? 1 : 0;
+
+        var newStatus;
+        var confirmMessage;
+        if (currentStatus === 0) {
+            newStatus = 1;
+            confirmMessage = "Are you sure you want to active?";
+        } else {
+            newStatus = 0;
+            confirmMessage = "Are you sure you want to make suspend?";
+        }
+
+        Swal.fire({
+            title: 'Confirmation',
+            text: confirmMessage,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'PUT',
+                    url: '/employees/' + employeeId + '/status',
+                    data: { status: newStatus },
+                    dataType: 'json',
+                    success: function (response) {
+                        toastr.success(response.message);
+
+                        var rowIndex = employeeTable.row(row).index();
+                        var rowData = employeeTable.row(rowIndex).data();
+                        rowData[4] = newStatus === 1 ? 'Active' : 'Suspended';
+                        employeeTable.row(rowIndex).data(rowData).draw(false);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('An error occurred while processing your request.');
+                        console.error('Error:', xhr.responseText);
+                        toastr.error('An error occurred while processing your request.');
+                    }
+                });
             }
         });
     });

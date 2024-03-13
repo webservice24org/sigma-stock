@@ -177,4 +177,17 @@ class EmployeeController extends Controller
             return response()->json(['status' => 'failed', 'message' => 'Failed to delete Employee: ' . $e->getMessage()]);
         }
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $employee = Employee::find($id);
+        if (!$employee) {
+            return response()->json(['status' => 'failed', 'message' => 'Employee not found'], 404);
+        }
+        $employee->status = $request->status;
+        $employee->save();
+
+        return response()->json(['status' => 'success', 'message' => 'Status updated successfully'], 200);
+    }
+
 }

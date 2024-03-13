@@ -33,9 +33,9 @@
                                     <td>{{ date('d-m-Y', strtotime($item->joining_date)) }}</td>
                                     <td>
                                         @if ($item->status == 0)
-                                            <span class="badge bg-danger">Pending</span>
+                                            <span class="badge bg-danger">Suspended</span>
                                         @else
-                                            <span class="badge bg-success">Approved</span>
+                                            <span class="badge bg-success">Active</span>
                                         @endif
                                     </td>
                                     

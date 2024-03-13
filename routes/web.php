@@ -34,13 +34,14 @@ Route::middleware([
 
     Route::resource('suppliers', SupplierController::class);
     Route::put('/suppliers/{id}/status', [SupplierController::class, 'updateStatus'])->name('suppliers.updateStatus');
-
-
+    
+    
     Route::get('/users', [SupplierController::class, 'allUsers']);
     
     Route::resource('/hrm-departments', HrmDepartmentController::class);
     Route::resource('/employees', EmployeeController::class);
     Route::get('/departments', [EmployeeController::class, 'allDepartments']);
+    Route::put('/employees/{id}/status', [EmployeeController::class, 'updateStatus'])->name('employees.updateStatus');
 });
 
 
