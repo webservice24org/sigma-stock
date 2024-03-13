@@ -95,6 +95,7 @@
     <script src="{{asset('assets/admin/js/department.js')}}"></script>
     <script src="{{asset('assets/admin/js/employee.js')}}"></script>
     <script src="{{asset('assets/admin/js/warehouse.js')}}"></script>
+    <script src="{{asset('assets/admin/js/product-units.js')}}"></script>
 
     <script src="{{asset('assets/admin/plugins/chart.min.js')}}"></script>
 

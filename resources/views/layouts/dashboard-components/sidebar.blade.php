@@ -109,7 +109,7 @@
                             <a href="{{route('warehouses.index')}}">Warehouses</a>
                         </li>
                         <li>
-                            <a href="extention-02.html">Extentions-02</a>
+                            <a href="{{route('product-units.index')}}">Product Units</a>
                         </li>
                     </ul>
                 </li>
