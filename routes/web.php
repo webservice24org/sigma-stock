@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CustomerCategoryController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\HrmDepartmentController;
 use App\Http\Controllers\Admin\ProductUnitController;
+use App\Http\Controllers\Admin\PurchaseCategoryController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\WarehouseController;
 use Illuminate\Support\Facades\Route;
@@ -36,18 +37,20 @@ Route::middleware([
 
     Route::resource('suppliers', SupplierController::class);
     Route::put('/suppliers/{id}/status', [SupplierController::class, 'updateStatus'])->name('suppliers.updateStatus');
-    
-    
+
+
     Route::get('/users', [SupplierController::class, 'allUsers']);
-    
+
     Route::resource('/hrm-departments', HrmDepartmentController::class);
     Route::resource('/employees', EmployeeController::class);
     Route::get('/departments', [EmployeeController::class, 'allDepartments']);
     Route::put('/employees/{id}/status', [EmployeeController::class, 'updateStatus'])->name('employees.updateStatus');
-    
+
     Route::resource('/warehouses', WarehouseController::class);
 
     Route::resource('/product-units', ProductUnitController::class);
+
+    Route::resource('/purchase-categories', PurchaseCategoryController::class);
 
 });
 

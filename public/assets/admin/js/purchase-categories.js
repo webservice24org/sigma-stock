@@ -6,23 +6,23 @@ $.ajaxSetup({
 
 $(document).ready(function () {
 
-    const unitTable = $('#unitTable').DataTable();
-    $('#productUnitCreate').on('click', function () {
-        $('#createUnitModal').modal('toggle');
+    const purchaseCategoryTable = $('#purchaseCategoryTable').DataTable();
+    $('#purchaseCategoryCreate').on('click', function () {
+        $('#createPurchaseCatModal').modal('toggle');
     })
 
 
-    $('#unitForm').validate({
+    $('#purchaseCatForm').validate({
         rules: {
-            unit_name: {
+            purchase_cat_name: {
                 required: true,
                 minlength: 3
             }
         },
         messages: {
-            unit_name: {
-                required: "Please enter the Unit name",
-                minlength: jQuery.validator.format("At least {0} characters required for the warehouse name")
+            purchase_cat_name: {
+                required: "Please enter the Purchase Category Name",
+                minlength: jQuery.validator.format("At least {0} characters required for the category name")
             }
         },
         submitHandler: function (form) {
@@ -30,24 +30,22 @@ $(document).ready(function () {
             const formData = $(form).serializeArray();
             $.ajax({
                 type: "POST",
-                url: "/product-units",
+                url: "/purchase-categories",
                 data: formData,
                 dataType: "json",
                 success: function (response) {
                     $(form).trigger('reset');
-                    $('#createUnitModal').modal('toggle');
+                    $('#createPurchaseCatModal').modal('toggle');
                     if (response.status === 'success') {
                         toastr.success(response.message);
                         const newRowData = [
-                            response.unit.id,
-                            response.unit.user_id,
-                            response.unit.unit_name,
-                            '<a href="javascript:void(0)" class="btn btn-success editunit" data-id="' + response.unit.id + '"><i class="fas fa-pen-to-square"></i></a>' +
-                            '<a href="javascript:void(0)" class="btn btn-danger deleteunit" data-id="' + response.unit.id + '"><i class="fas fa-trash-can"></i></a>'
+                            response.purchaseCat.id,
+                            response.purchaseCat.purchase_cat_name,
+                            '<a href="javascript:void(0)" class="btn btn-success editPurchaseCat" data-id="' + response.purchaseCat.id + '"><i class="fas fa-pen-to-square"></i></a>' +
+                            '<a href="javascript:void(0)" class="btn btn-danger deletePurchaseCat" data-id="' + response.purchaseCat.id + '"><i class="fas fa-trash-can"></i></a>'
 
                         ];
-                        $('#unitTable').DataTable().row.add(newRowData).draw(false);
-                        location.reload();
+                        $('#purchaseCategoryTable').DataTable().row.add(newRowData).draw(false);
 
                     } else if (response.status === 'failed') {
                         toastr.error(response.message);
@@ -61,17 +59,17 @@ $(document).ready(function () {
         }
     });
 
-    $("#unitTable").on("click", ".editunit", function () {
-        var unitId = $(this).data("id");
+    $("#purchaseCategoryTable").on("click", ".editPurchaseCat", function () {
+        var purchaseCatId = $(this).data("id");
         $.ajax({
             type: "GET",
-            url: `/product-units/${unitId}/edit`,
+            url: `/purchase-categories/${purchaseCatId}/edit`,
             dataType: "json",
             success: function (response) {
                 if (response.status === 'success') {
-                    $("#editUnitModal #unitId").val(response.unit.id);
-                    $("#editUnitModal #unit_name").val(response.unit.unit_name);
-                    $("#editUnitModal").modal('toggle');
+                    $("#editPurchaseCatModal #purchaseCatId").val(response.purchaseCat.id);
+                    $("#editPurchaseCatModal #purchase_cat_name").val(response.purchaseCat.purchase_cat_name);
+                    $("#editPurchaseCatModal").modal('toggle');
                 } else if (response.status === 'failed') {
                     toastr.error(response.message);
                 }
@@ -82,44 +80,42 @@ $(document).ready(function () {
         });
     });
 
-    $("#editUnitForm").validate({
+    $("#editpurchaseCatForm").validate({
         rules: {
-            unit_name: {
+            purchase_cat_name: {
                 required: true,
                 minlength: 3
             }
         },
         messages: {
-            unit_name: {
-                required: "Please enter the Unit name",
-                minlength: jQuery.validator.format("At least {0} characters required for the warehouse name")
+            purchase_cat_name: {
+                required: "Please enter the Purchase Category Name",
+                minlength: jQuery.validator.format("At least {0} characters required for the category name")
             }
         },
         submitHandler: function (form) {
             $("#response").empty();
             const formData = $(form).serializeArray();
-            const unitId = $("#unitId").val();
+            const purchaseCatId = $("#purchaseCatId").val();
 
             $.ajax({
                 type: "PUT",
-                url: `/product-units/${unitId}`,
+                url: `/purchase-categories/${purchaseCatId}`,
                 data: formData,
                 dataType: "json",
                 success: function (response) {
-                    $("#editUnitModal").modal("toggle");
+                    $("#editPurchaseCatModal").modal("toggle");
                     if (response.status === 'success') {
                         toastr.success(response.message);
 
-                        const rowIndex = unitTable.row($(`#unit_${unitId}`)).index();
+                        const rowIndex = purchaseCategoryTable.row($(`#PurchaseCat_${purchaseCatId}`)).index();
                         const rowData = [
-                            response.unit.id,
-                            response.unit.user_id,
-                            response.unit.unit_name,
-                            '<a href="javascript:void(0)" class="btn btn-success editunit" data-id="' + response.unit.id + '"><i class="fas fa-pen-to-square"></i></a>' +
-                            '<a href="javascript:void(0)" class="btn btn-danger deleteunit" data-id="' + response.unit.id + '"><i class="fas fa-trash-can"></i></a>'
+                            response.purchaseCat.id,
+                            response.purchaseCat.purchase_cat_name,
+                            '<a href="javascript:void(0)" class="btn btn-success editPurchaseCat" data-id="' + response.purchaseCat.id + '"><i class="fas fa-pen-to-square"></i></a>' +
+                            '<a href="javascript:void(0)" class="btn btn-danger deletePurchaseCat" data-id="' + response.purchaseCat.id + '"><i class="fas fa-trash-can"></i></a>'
                         ];
-                        unitTable.row(rowIndex).data(rowData).draw(false);
-                        location.reload();
+                        purchaseCategoryTable.row(rowIndex).data(rowData).draw(false);
                     } else if (response.status === 'failed') {
                         toastr.error(response.message);
                     }
@@ -132,8 +128,8 @@ $(document).ready(function () {
 
     });
 
-    $("#unitTable").on("click", ".deleteunit", function () {
-        var unitId = $(this).data("id");
+    $("#purchaseCategoryTable").on("click", ".deletePurchaseCat", function () {
+        var purchaseCatId = $(this).data("id");
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -146,11 +142,11 @@ $(document).ready(function () {
             if (result.isConfirmed) {
                 $.ajax({
                     type: "DELETE",
-                    url: `/product-units/${unitId}`,
+                    url: `/purchase-categories/${purchaseCatId}`,
                     dataType: "json",
                     success: function (response) {
                         if (response.status === 'success') {
-                            unitTable.row($(`#unit_${unitId}`).closest('tr')).remove().draw(false);
+                            purchaseCategoryTable.row($(`#PurchaseCat_${purchaseCatId}`).closest('tr')).remove().draw(false);
                             toastr.success(response.message);
                         } else if (response.status === 'failed') {
                             toastr.error(response.message);

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\PurchaseCategory;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PurchaseCategoryController extends Controller
 {
@@ -12,7 +15,8 @@ class PurchaseCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $purchaseCates = PurchaseCategory::all();
+        return view('layouts.pages.purchase-categories', compact('purchaseCates'));
     }
 
     /**
@@ -28,7 +32,21 @@ class PurchaseCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'purchase_cat_name' => 'required|string|min:3|max:30|unique:purchase_categories',
+        ]);
+
+        try {
+            $purchaseCat = new PurchaseCategory();
+
+            $purchaseCat->purchase_cat_name = $request->input('purchase_cat_name');
+            $purchaseCat->user_id = Auth::id();
+            $purchaseCat->save();
+
+            return response()->json(['status' => 'success', 'message' => 'Purchase Category Ccreated successfully.', 'purchaseCat' => $purchaseCat], 201);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -44,15 +62,30 @@ class PurchaseCategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $purchaseCat = PurchaseCategory::findOrFail($id);
+            return response()->json(['status' => 'success', 'purchaseCat' => $purchaseCat], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $purchaseCat = PurchaseCategory::findOrFail($id);
+            $purchaseCat->update([
+                'purchase_cat_name' => $request->input('purchase_cat_name'),
+                'user_id' => Auth::id()
+            ]);
+
+            return response()->json(['status' => 'success', 'message' => 'Purchase Category updated successfully.', 'purchaseCat' => $purchaseCat], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -60,6 +93,13 @@ class PurchaseCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $purchaseCat = PurchaseCategory::findOrFail($id);
+            $purchaseCat->delete();
+
+            return response()->json(['status' => 'success', 'message' => 'Purchase Category deleted successfully.'], 200);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
+        }
     }
 }

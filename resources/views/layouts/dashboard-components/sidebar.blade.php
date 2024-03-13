@@ -33,9 +33,7 @@
                         <li>
                             <a href="{{route('customers-categories.index')}}">Customer Category</a>
                         </li>
-                        <li>
-                            <a href="new-page.html">Add new page</a>
-                        </li>
+                        
                     </ul>
                 </li>
                 <li>
@@ -110,6 +108,9 @@
                         </li>
                         <li>
                             <a href="{{route('product-units.index')}}">Product Units</a>
+                        </li>
+                        <li>
+                            <a href="{{route('purchase-categories.index')}}">Purchase Category</a>
                         </li>
                     </ul>
                 </li>

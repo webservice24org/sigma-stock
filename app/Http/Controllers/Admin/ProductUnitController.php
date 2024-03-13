@@ -35,14 +35,14 @@ class ProductUnitController extends Controller
         $request->validate([
             'unit_name' => 'required|string|min:3|max:255|unique:product_units',
         ]);
-    
+
         try {
             $unit = new ProductUnit();
-            
+
             $unit->unit_name = $request->input('unit_name');
             $unit->user_id = Auth::id();
             $unit->save();
-    
+
             return response()->json(['status' => 'success', 'message' => 'Product Unit created successfully.', 'unit' => $unit], 201);
         } catch (Exception $e) {
             return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
