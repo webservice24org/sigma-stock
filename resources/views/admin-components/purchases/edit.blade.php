@@ -5,8 +5,8 @@
         <h1 class="modal-title fs-5" id="editPurchaseModalLabel">Edit Purchase Details</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body" id="purchase">
-        <form action="" method="POST" id="purchaseForm">
+      <div class="modal-body" id="editPurchase">
+        <form action="" method="POST" id="updatePurchaseForm">
             @csrf
             <div class="row mb-3">
               <div class="col-md-4 col-sm-12">
@@ -122,6 +122,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
+            <input type="hidden" name="purchaseId" id="purchaseId">
         </form>
       </div>
       

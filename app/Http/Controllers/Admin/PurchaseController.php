@@ -9,6 +9,7 @@ use App\Models\PurchaseCategory;
 use App\Models\Supplier;
 use App\Models\Warehouse;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -96,13 +97,13 @@ class PurchaseController extends Controller
     {
         try {
             $purchase = Purchase::select(
-                    'purchases.*',
-                    'users.name as user_name',
-                    'suppliers.shopname as supplier_shop',
-                    'warehouses.warehouse_name',
-                    'purchase_categories.purchase_cat_name',
-                    'product_units.unit_name'
-                )
+                'purchases.*',
+                'users.name as user_name',
+                'suppliers.shopname as supplier_shop',
+                'warehouses.warehouse_name',
+                'purchase_categories.purchase_cat_name',
+                'product_units.unit_name'
+            )
                 ->join('users', 'purchases.user_id', '=', 'users.id')
                 ->join('suppliers', 'purchases.supplier_id', '=', 'suppliers.id')
                 ->join('warehouses', 'purchases.warehouse_id', '=', 'warehouses.id')
@@ -120,7 +121,7 @@ class PurchaseController extends Controller
      */
     public function edit($id)
     {
-        $purchase = Purchase::with('supplier', 'warehouse', 'purchaseCategory', 'unit')->find($id);
+        $purchase = Purchase::with(['allSuppliers', 'allwarehouses', 'allPurchseCats', 'allUnits'])->find($id);
         return response()->json(['purchase' => $purchase], 200);
     }
 
@@ -128,10 +129,39 @@ class PurchaseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'supplier_id' => 'required|exists:suppliers,id',
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'purchase_category_id' => 'required|exists:purchase_categories,id',
+            'unit_id' => 'required|exists:product_units,id',
+            'date' => 'required|date',
+            'tax_rate' => 'nullable|numeric|min:0',
+            'payment_statut' => 'required|integer|in:0,1',
+            'notes' => 'nullable|string',
+            'discount' => 'nullable|numeric|min:0',
+            'shipping_cost' => 'nullable|numeric|min:0',
+            'purchase_qty' => 'nullable|numeric|min:0',
+            'grand_total' => 'nullable|numeric|min:0',
+            'paid_amount' => 'nullable|numeric|min:0',
+            'due_amount' => 'nullable|numeric|min:0',
+        ]);
+
+        try {
+            $purchase = Purchase::findOrFail($id);
+            $purchase->fill($validatedData);
+            $purchase->user_id = Auth::id();
+            $purchase->save();
+
+            return response()->json(['status' => 'success', 'message' => 'Purchase updated successfully', 'purchase' => $purchase], 200);
+        } catch (ModelNotFoundException $ex) {
+            return response()->json(['status' => 'failed', 'message' => 'Purchase not found.'], 404);
+        } catch (Exception $ex) {
+            return response()->json(['status' => 'failed', 'message' => $ex->getMessage()], 500);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.

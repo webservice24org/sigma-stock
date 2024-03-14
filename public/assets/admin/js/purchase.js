@@ -87,19 +87,19 @@ $(document).ready(function () {
         rules: {
             supplier_id: {
                 required: true
-            },warehouse_id: {
+            }, warehouse_id: {
                 required: true
-            },purchase_category_id: {
+            }, purchase_category_id: {
                 required: true
-            },unit_id: {
+            }, unit_id: {
                 required: true
-            },date: {
+            }, date: {
                 required: true
-            },tax_rate: {
+            }, tax_rate: {
                 required: true
-            },payment_statut: {
+            }, payment_statut: {
                 required: true
-            },notes: {
+            }, notes: {
                 required: true
             }
         },
@@ -161,14 +161,14 @@ $(document).ready(function () {
                     $('#viewPurchaseModal #purchase_qty').val(purchase.purchase_qty);
                     $('#viewPurchaseModal #date').val(purchase.date);
                     $('#viewPurchaseModal #tax_rate').val(purchase.tax_rate);
-                    $('#viewPurchaseModal #payment_statut').val(purchase.payment_statut ===0 ? 'Full Paid' : 'Partial');
+                    $('#viewPurchaseModal #payment_statut').val(purchase.payment_statut === 0 ? 'Full Paid' : 'Partial');
                     $('#viewPurchaseModal #grand_total').val(purchase.grand_total);
                     $('#viewPurchaseModal #paid_amount').val(purchase.paid_amount);
                     $('#viewPurchaseModal #discount').val(purchase.discount);
                     $('#viewPurchaseModal #due_amount').val(purchase.due_amount);
                     $('#viewPurchaseModal #shipping_cost').val(purchase.shipping_cost);
                     $('#viewPurchaseModal #notes').val(purchase.notes);
-                    
+
 
                     $('#viewPurchaseModal').modal('toggle');
 
@@ -189,34 +189,124 @@ $(document).ready(function () {
     });
 
 
-    $("#purchaseTable").on('click', '.editPurchase', function () {
-        var purchaseId = $(this).data('id'); 
-    
+    $('#purchaseTable').on('click', '.editPurchase', function () {
+        var purchaseId = $(this).data('id');
+        $.when(
+            $.ajax({
+                type: 'GET',
+                url: '/all-suppliers',
+                dataType: 'json'
+            }),
+            $.ajax({
+                type: 'GET',
+                url: '/all-warehouses',
+                dataType: 'json'
+            }),
+            $.ajax({
+                type: 'GET',
+                url: '/all-purchase-cats',
+                dataType: 'json'
+            }),
+            $.ajax({
+                type: 'GET',
+                url: '/all-units',
+                dataType: 'json'
+            })
+        ).done(function (suppliersResponse, warehousesResponse, purchaseCatsResponse, unitsResponse) {
+            $('#editPurchaseModal #supplier_id').empty();
+            $.each(suppliersResponse[0].allSuppliers, function (index, supplier) {
+                $('#editPurchaseModal #supplier_id').append($('<option>', {
+                    value: supplier.id,
+                    text: supplier.shopname
+                }));
+            });
+            $('#editPurchaseModal #warehouse_id').empty();
+            $.each(warehousesResponse[0].allwarehouses, function (index, warehouse) {
+                $('#editPurchaseModal #warehouse_id').append($('<option>', {
+                    value: warehouse.id,
+                    text: warehouse.warehouse_name
+                }));
+            });
+            $('#editPurchaseModal #purchase_category_id').empty();
+            $.each(purchaseCatsResponse[0].allPurchseCats, function (index, purchaseCat) {
+                $('#editPurchaseModal #purchase_category_id').append($('<option>', {
+                    value: purchaseCat.id,
+                    text: purchaseCat.purchase_cat_name
+                }));
+            });
+            $('#editPurchaseModal #unit_id').empty();
+            $.each(unitsResponse[0].allUnits, function (index, unit) {
+                $('#editPurchaseModal #unit_id').append($('<option>', {
+                    value: unit.id,
+                    text: unit.unit_name
+                }));
+            });
+            $.ajax({
+                type: 'GET',
+                url: '/purchases/' + purchaseId + '/edit',
+                dataType: 'json',
+                success: function (response) {
+                    $('#editPurchaseModal #supplier_id').val(response.purchase.supplier_id);
+                    $('#editPurchaseModal #warehouse_id').val(response.purchase.warehouse_id);
+                    $('#editPurchaseModal #purchase_category_id').val(response.purchase.purchase_category_id);
+                    $('#editPurchaseModal #unit_id').val(response.purchase.unit_id);
+                    $('#editPurchaseModal #date').val(response.purchase.date);
+                    $('#editPurchaseModal #tax_rate').val(response.purchase.tax_rate);
+                    $('#editPurchaseModal #payment_statut').val(response.purchase.payment_statut);
+                    $('#editPurchaseModal #notes').val(response.purchase.notes);
+                    $('#editPurchaseModal #purchase_qty').val(response.purchase.purchase_qty);
+                    $('#editPurchaseModal #grand_total').val(response.purchase.grand_total);
+                    $('#editPurchaseModal #paid_amount').val(response.purchase.paid_amount);
+                    $('#editPurchaseModal #discount').val(response.purchase.discount);
+                    $('#editPurchaseModal #due_amount').val(response.purchase.due_amount);
+                    $('#editPurchaseModal #shipping_cost').val(response.purchase.shipping_cost);
+                    $('#editPurchaseModal #purchaseId').val(response.purchase.id);
+
+                    $('#editPurchaseModal').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching purchase data:', error);
+                }
+            });
+        }).fail(function () {
+            console.error('Error fetching necessary data for purchase edit');
+        });
+    });
+
+
+    $('#updatePurchaseForm').submit(function (e) {
+        e.preventDefault();
+
+        var purchaseId = $('#purchaseId').val();
+
         $.ajax({
-            type: 'GET',
-            url: '/purchases/' + purchaseId + '/edit',
+            type: 'PUT',
+            url: '/purchases/' + purchaseId,
             dataType: 'json',
-            success: function(response) {
-                $('editPurchaseModal #supplier_id').val(response.purchase.supplier_id);
-                $('editPurchaseModal #warehouse_id').val(response.purchase.warehouse_id);
-                $('editPurchaseModal #purchase_category_id').val(response.purchase.purchase_category_id);
-                $('editPurchaseModal #unit_id').val(response.purchase.unit_id);
-                
-                $('#editPurchaseModal').modal('toggle');
+            data: $(this).serialize(),
+            success: function (response) {
+                $('#editPurchaseModal').modal('hide');
+                toastr.success(response.message);
+                const rowIndex = purchaseTable.row($(`#purchase_${purchaseId}`)).index();
+                const newRowData = [
+                    response.purchase.id,
+                    response.purchase.date.split(' ')[0],
+                    response.purchase.grand_total,
+                    response.purchase.paid_amount,
+                    response.purchase.due_amount,
+
+                    '<a href="javascript:void(0)" class="btn btn-success viewPurchase" data-id="' + response.purchase.id + '"><i class="fas fa-eye"></i></a>' +
+                    '<a href="javascript:void(0)" class="btn btn-success editPurchase" data-id="' + response.purchase.id + '"><i class="fas fa-pen-to-square"></i></a>' +
+                    '<a href="javascript:void(0)" class="btn btn-danger deletePurchase" data-id="' + response.purchase.id + '"><i class="fas fa-trash-can"></i></a>'
+                ];
+                purchaseTable.row(rowIndex).data(newRowData).draw(false);
             },
-            error: function(xhr, status, error) {
-                console.error('Error fetching purchase data:', error);
+            error: function (xhr, status, error) {
+                console.error('Error updating purchase:', error);
             }
         });
-        
     });
-            
-    
-    
 
-
-
-    
 
     $("#purchaseTable").on("click", ".deletePurchase", function () {
         var purchaseId = $(this).data('id');
@@ -250,7 +340,7 @@ $(document).ready(function () {
         });
     });
 
-    
+
 
 
 });

@@ -176,63 +176,64 @@ $(document).ready(function () {
     });
 
 
-    $('#employeeTable').on('click', '.editEmployee', function() {
+    $('#employeeTable').on('click', '.editEmployee', function () {
         var employeeId = $(this).data('id');
         $.ajax({
             type: 'GET',
             url: '/departments',
             dataType: 'json',
-            success: function(departmentResponse) {
-                $('#editEmployeeModal #department_id').empty(); 
-                departmentResponse.departments.forEach(function(department) {
+            success: function (departmentResponse) {
+                $('#editEmployeeModal #department_id').empty();
+                departmentResponse.departments.forEach(function (department) {
                     $('#editEmployeeModal #department_id').append($('<option>', {
                         value: department.id,
                         text: department.department_name
                     }));
                 });
-    
+
                 $.ajax({
                     type: 'GET',
                     url: '/employees/' + employeeId,
                     dataType: 'json',
-                    success: function(response) {
+                    success: function (response) {
                         $('#editEmployeeModal #employeeId').val(response.employee.id);
                         $('#editEmployeeModal #user_id').val(response.employee.user_id);
                         $('#editEmployeeModal #userName').text(response.employee.user_name);
                         $('#editEmployeeModal #department_id').val(response.employee.hrm_department_id);
                         $('#editEmployeeModal #salary_amount').val(response.employee.salary_amount);
-                    
+
                         $('#editEmployeeModal #note').val(response.employee.note);
-                        
-                        $('#editEmployeeModal').modal('show'); 
+
+                        $('#editEmployeeModal').modal('show');
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('Error fetching employee data:', error);
-                        
+
                     }
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error fetching departments:', error);
-                
+
             }
         });
     });
-    
 
 
-    $('#editEmployeeForm').submit(function(event) {
-        event.preventDefault(); 
-        
-        var formData = $(this).serialize(); 
+
+    $('#editEmployeeForm').submit(function (event) {
+        event.preventDefault();
+
+        var formData = $(this).serialize();
         const employeeId = $("#employeeId").val();
         $.ajax({
             type: 'PUT',
-            url: '/employees/' + $('#editEmployeeModal #employeeId').val(), 
+            url: '/employees/' + $('#editEmployeeModal #employeeId').val(),
             data: formData,
             dataType: 'json',
-            success: function(response) {
-                $('#editEmployeeModal').modal('hide'); 
+            success: function (response) {
+                $('#editEmployeeModal').modal('hide');
+                toastr.success(response.message);
                 const rowIndex = employeeTable.row($(`#employee_${employeeId}`)).index();
                 const newRowData = [
                     response.employee.id,
@@ -249,9 +250,9 @@ $(document).ready(function () {
                 employeeTable.row(rowIndex).data(newRowData).draw(false);
                 location.reload();
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error updating employee:', error);
-                
+
             }
         });
     });
