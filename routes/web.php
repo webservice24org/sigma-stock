@@ -7,6 +7,9 @@ use App\Http\Controllers\Admin\ProductUnitController;
 use App\Http\Controllers\Admin\PurchaseCategoryController;
 use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\PurchaseDetailsController;
+use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\ProductCategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\WarehouseController;
 use Illuminate\Support\Facades\Route;
@@ -35,7 +38,13 @@ Route::middleware([
         return view('layouts.index');
     })->name('dashboard');
 
-    Route::resource('customers-categories', CustomerCategoryController::class);
+
+    Route::resource('customers', CustomerController::class);
+    Route::resource('customers-categories', CustomerCategoryController::class)->except(['show', 'create']);
+
+    Route::resource('product-categories', ProductCategoryController::class)->except(['show', 'create']);
+    Route::resource('products', ProductController::class)->except(['create']);
+
 
     Route::resource('suppliers', SupplierController::class);
     Route::put('/suppliers/{id}/status', [SupplierController::class, 'updateStatus'])->name('suppliers.updateStatus');

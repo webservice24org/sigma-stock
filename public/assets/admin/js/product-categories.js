@@ -22,13 +22,13 @@ $(document).ready(function () {
         tapToDismiss: false
     };
 
-    const customerCategoryTable = $("#customerCategoryTable").DataTable({});
+    const productCategoryTable = $("#productCategoryTable").DataTable({});
 
-    $('#createCustomerCategory').on('click', function () {
-        $('#createCustomerCategoryModal').modal('toggle');
+    $('#createProductCategory').on('click', function () {
+        $('#createProductCategoryModal').modal('toggle');
 
     });
-    $('#customerCategoryForm').validate({
+    $('#productCategoryForm').validate({
         rules: {
             name: {
                 required: true,
@@ -37,7 +37,7 @@ $(document).ready(function () {
         },
         messages: {
             name: {
-                required: "Please enter the name of the Customer Category",
+                required: "Please enter the name of the Product Category",
                 minlength: jQuery.validator.format("At least {0} characters required!")
             }
         },
@@ -46,12 +46,12 @@ $(document).ready(function () {
             const formData = $(form).serializeArray();
             $.ajax({
                 type: "POST",
-                url: "/customers-categories",
+                url: "/product-categories",
                 data: formData,
                 dataType: "json",
                 success: function (response) {
                     $(form).trigger('reset');
-                    $('#createCustomerCategoryModal').modal('toggle');
+                    $('#createProductCategoryModal').modal('toggle');
                     if (response.status === 'success') {
                         toastr.success(response.message);
                         const newRowData = [
@@ -61,7 +61,7 @@ $(document).ready(function () {
                             `<a href="javascript:void(0)" class="btn btn-success editCategory" data-id="${response.category.id}}">Edit</a>
                             <a href="javascript:void(0)" class="btn btn-danger deleteCategory" data-id="${response.category.id}}">Delete</a>`
                         ];
-                        customerCategoryTable.row.add(newRowData).draw(false);
+                        productCategoryTable.row.add(newRowData).draw(false);
                     } else if (response.status === 'failed') {
                         toastr.error(response.message);
                     }
@@ -77,17 +77,17 @@ $(document).ready(function () {
     });
 
     // Edit Category
-    $("#customerCategoryTable").on("click", ".editCategory", function () {
+    $("#productCategoryTable").on("click", ".editCategory", function () {
         var categoryId = $(this).data("id");
         $.ajax({
             type: "GET",
-            url: `/customers-categories/${categoryId}/edit`,
+            url: `/product-categories/${categoryId}/edit`,
             dataType: "json",
             success: function (response) {
                 if (response.status === 'success') {
-                    $("#editCustomerCategoryModal #editCategoryId").val(response.category.id);
-                    $("#editCustomerCategoryModal #name").val(response.category.name);
-                    $("#editCustomerCategoryModal").modal('toggle');
+                    $("#editProductCategoryModal #editCategoryId").val(response.category.id);
+                    $("#editProductCategoryModal #name").val(response.category.name);
+                    $("#editProductCategoryModal").modal('toggle');
                 } else if (response.status === 'failed') {
                     toastr.error(response.message);
                 }
@@ -98,7 +98,7 @@ $(document).ready(function () {
         });
     });
 
-    $("#editCustomerCategoryForm").validate({
+    $("#editProductCategoryForm").validate({
         rules: {
             name: {
                 required: true,
@@ -107,7 +107,7 @@ $(document).ready(function () {
         },
         messages: {
             name: {
-                required: "Please enter the name of the Customer Category",
+                required: "Please enter the name of the Product Category",
                 minlength: jQuery.validator.format("At least {0} characters required!")
             }
         },
@@ -118,23 +118,24 @@ $(document).ready(function () {
 
             $.ajax({
                 type: "PUT",
-                url: `/customers-categories/${categoryId}`,
+                url: `/product-categories/${categoryId}`,
                 data: formData,
                 dataType: "json",
                 success: function (response) {
-                    $("#editCustomerCategoryModal").modal("toggle");
+                    $("#editProductCategoryModal").modal("toggle");
+
                     if (response.status === 'success') {
                         toastr.success(response.message);
 
-                        const rowIndex = customerCategoryTable.row($(`#category_${categoryId}`)).index();
+                        const rowIndex = productCategoryTable.row($(`#category_${categoryId}`)).index();
                         const rowData = [
                             response.category.id,
-                            response.category.createdBy.name,
-                            response.category.cat_name,
+                            response.category.name,
+                            response.category.created_by.name,
                             `<a href="javascript:void(0)" class="btn btn-success editCategory" data-id="${response.category.id}">Edit</a>
                             <a href="javascript:void(0)" class="btn btn-danger deleteCategory" data-id="${response.category.id}">Delete</a>`
                         ];
-                        customerCategoryTable.row(rowIndex).data(rowData).draw(false);
+                        productCategoryTable.row(rowIndex).data(rowData).draw(false);
                     } else if (response.status === 'failed') {
                         toastr.error(response.message);
                     }
@@ -147,7 +148,7 @@ $(document).ready(function () {
 
     });
 
-    $("#customerCategoryTable").on("click", ".deleteCategory", function () {
+    $("#productCategoryTable").on("click", ".deleteCategory", function () {
         var categoryId = $(this).data("id");
         Swal.fire({
             title: 'Are you sure?',
@@ -161,11 +162,11 @@ $(document).ready(function () {
             if (result.isConfirmed) {
                 $.ajax({
                     type: "DELETE",
-                    url: `/customers-categories/${categoryId}`,
+                    url: `/product-categories/${categoryId}`,
                     dataType: "json",
                     success: function (response) {
                         if (response.status === 'success') {
-                            customerCategoryTable.row($(`#category_${categoryId}`).closest('tr')).remove().draw(false);
+                            productCategoryTable.row($(`#category_${categoryId}`).closest('tr')).remove().draw(false);
                             toastr.success(response.message);
                         } else if (response.status === 'failed') {
                             toastr.error(response.message);
@@ -178,6 +179,7 @@ $(document).ready(function () {
             }
         });
     });
+
 
 
 });

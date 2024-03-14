@@ -6,7 +6,7 @@
                     <div class="col-md-6">
                     </div>
                     <div class="col-md-6 text-end">
-                        <a href="javascript:void(0)" class="btn btn-primary" id="createCustomerCategory">Create
+                        <a href="javascript:void(0)" class="btn btn-primary" id="createProductCategory">Create
                             Category</a>
 
                     </div>
@@ -14,17 +14,17 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table align-middle table-bordered" id="customerCategoryTable">
+                    <table class="table align-middle table-bordered" id="productCategoryTable">
                         <thead>
                             <tr>
                                 <th>id</th>
-                                <th>Customer Category</th>
+                                <th>Product Category</th>
                                 <th>Created By</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($customerCategories as $item)
+                            @foreach ($categories as $item)
                                 <tr id="category_{{ $item->id }}">
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>

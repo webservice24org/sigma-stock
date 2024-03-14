@@ -1,13 +1,13 @@
-<div class="modal fade" id="editCustomerCategoryModal" tabindex="-1" aria-labelledby="editCustomerCategoryModalLabel"
+<div class="modal fade" id="editProductCategoryModal" tabindex="-1" aria-labelledby="editProductCategoryModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="editCustomerCategoryModalLabel">Edit Customer Category</h1>
+                <h1 class="modal-title fs-5" id="editProductCategoryModalLabel">Edit Product Category</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="createCustomerCateogry">
-                <form action="" method="POST" id="editCustomerCategoryForm">
+            <div class="modal-body" id="editProductCategory">
+                <form action="" method="POST" id="editProductCategoryForm">
                     @csrf
                     <div class="form-group">
                         <label for="name">Category Name</label>

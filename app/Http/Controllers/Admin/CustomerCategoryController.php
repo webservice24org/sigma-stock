@@ -7,6 +7,7 @@ use App\Models\CustomerCategory;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+
 class CustomerCategoryController extends Controller
 {
     /**
@@ -18,13 +19,6 @@ class CustomerCategoryController extends Controller
         return view('layouts.pages.customer-categories', compact('customerCategories'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -33,30 +27,21 @@ class CustomerCategoryController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'cat_name' => 'required|string|min:3|max:255|unique:customer_categories',
+            'name' => 'required|string|min:3|max:255|unique:customer_categories',
         ]);
-    
+
         try {
-            $customerCategory = new CustomerCategory();
-            
-            $customerCategory->cat_name = $request->input('cat_name');
-            $customerCategory->user_id = Auth::id();
-            $customerCategory->save();
-    
+            $customerCategory = CustomerCategory::create([
+                'name' => $request->input('name'),
+                'user_id' => Auth::id(),
+            ]);
+
             return response()->json(['status' => 'success', 'message' => 'Customer category created successfully.', 'category' => $customerCategory], 201);
         } catch (Exception $e) {
             return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
         }
     }
-    
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -79,13 +64,13 @@ class CustomerCategoryController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'cat_name' => 'required|string|min:3|max:255|unique:customer_categories',
+            'name' => 'required|string|min:3|max:255|unique:customer_categories',
         ]);
 
         try {
             $customerCategory = CustomerCategory::findOrFail($id);
             $customerCategory->update([
-                'cat_name' => $request->input('cat_name'),
+                'name' => $request->input('name'),
             ]);
 
             return response()->json(['status' => 'success', 'message' => 'Customer category updated successfully.', 'category' => $customerCategory], 200);
