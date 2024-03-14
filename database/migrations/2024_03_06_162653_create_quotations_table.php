@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,16 +14,14 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->id();
             $table->unsignedBigInteger('user_id')->index('user_id');
-			$table->date('date');
-			$table->unsignedBigInteger('customer_id')->index('customer_id');
-			$table->unsignedBigInteger('warehouse_id')->index('warehouse_id');
+            $table->date('date');
+            $table->unsignedBigInteger('customer_id')->index('customer_id');
+            $table->unsignedBigInteger('warehouse_id')->index('warehouse_id');
             $table->integer('tax_percentage')->default(0);
-			$table->float('discount', 10, 0)->nullable()->default(0);
-			$table->float('shipping_amount', 10, 0)->nullable()->default(0);
-			$table->float('total_amount', 10, 0);
-			$table->tinyInteger('status' )
-                ->default(0)
-                ->comment('0=Pending, 1=Approved');
+            $table->float('discount', 10, 0)->nullable()->default(0);
+            $table->float('shipping_amount', 10, 0)->nullable()->default(0);
+            $table->float('total_amount', 10, 0);
+            $table->unsignedBigInteger('product_id')->index('product_id_quotation');
             $table->text('note')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')
@@ -33,9 +30,12 @@ return new class extends Migration
             $table->foreign('customer_id')->references('id')->on('customers')
                 ->cascadeOnUpdate()->restrictOnDelete();
 
-                $table->foreign('warehouse_id')->references('id')->on('warehouses')
+            $table->foreign('warehouse_id')->references('id')->on('warehouses')
                 ->cascadeOnUpdate()->restrictOnDelete();
-                
+
+            $table->foreign('product_id')->references('id')->on('products')
+                ->cascadeOnUpdate()->restrictOnDelete();
+
             $table->timestamps();
         });
     }
