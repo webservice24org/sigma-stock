@@ -6,7 +6,6 @@ use App\Http\Controllers\Admin\HrmDepartmentController;
 use App\Http\Controllers\Admin\ProductUnitController;
 use App\Http\Controllers\Admin\PurchaseCategoryController;
 use App\Http\Controllers\Admin\PurchaseController;
-use App\Http\Controllers\Admin\PurchaseDetailsController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;

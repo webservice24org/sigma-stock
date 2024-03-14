@@ -34,9 +34,7 @@
                         <li>
                             <a href="{{ route('customers-categories.index') }}">Customer Category</a>
                         </li>
-<<<<<<< HEAD
-                        
-=======
+
                         <li>
                             <a href="{{ route('customers.index') }}">Customers</a>
                         </li>
@@ -58,7 +56,6 @@
                         <li>
                             <a href="{{ route('products.index') }}">Products</a>
                         </li>
->>>>>>> origin/nayeem
                     </ul>
                 </li>
                 <li>
