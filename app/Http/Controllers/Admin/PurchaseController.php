@@ -92,18 +92,38 @@ class PurchaseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        try {
+            $purchase = Purchase::select(
+                    'purchases.*',
+                    'users.name as user_name',
+                    'suppliers.shopname as supplier_shop',
+                    'warehouses.warehouse_name',
+                    'purchase_categories.purchase_cat_name',
+                    'product_units.unit_name'
+                )
+                ->join('users', 'purchases.user_id', '=', 'users.id')
+                ->join('suppliers', 'purchases.supplier_id', '=', 'suppliers.id')
+                ->join('warehouses', 'purchases.warehouse_id', '=', 'warehouses.id')
+                ->join('purchase_categories', 'purchases.purchase_category_id', '=', 'purchase_categories.id')
+                ->join('product_units', 'purchases.unit_id', '=', 'product_units.id')
+                ->findOrFail($id);
+            return response()->json(['status' => 'success', 'purchase' => $purchase], 200);
+        } catch (Exception $ex) {
+            return response()->json(['status' => 'failed', 'message' => 'Purchase data not found.'], 404);
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $purchase = Purchase::with('supplier', 'warehouse', 'purchaseCategory', 'unit')->find($id);
+        return response()->json(['purchase' => $purchase], 200);
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -118,6 +138,14 @@ class PurchaseController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $purchase = Purchase::findOrFail($id);
+
+            $purchase->delete();
+
+            return response()->json(['status' => 'success', 'message' => 'Purchase deleted successfully']);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'failed', 'message' => 'Failed to delete Purchase: ' . $e->getMessage()]);
+        }
     }
 }

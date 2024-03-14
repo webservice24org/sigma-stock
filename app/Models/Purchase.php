@@ -26,19 +26,19 @@ class Purchase extends Model
         'due_amount',
     ];
 
-    public function allSuppliers()
+    public function supplier()
     {
         return $this->belongsToMany(Supplier::class, 'supplier_id');
     }
-    public function allwarehouses()
+    public function warehouse()
     {
         return $this->belongsToMany(Warehouse::class, 'warehouse_id');
     }
-    public function allPurchseCats()
+    public function purchaseCategory()
     {
         return $this->belongsToMany(PurchaseCategory::class, 'purchase_category_id');
     }
-    public function allUnits()
+    public function unit()
     {
         return $this->belongsToMany(ProductUnit::class, 'unit_id');
     }

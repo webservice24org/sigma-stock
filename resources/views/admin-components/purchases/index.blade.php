@@ -18,8 +18,9 @@
                             <tr>
                                 <th>id</th>
                                 <th>Purchase Date</th>
-                                <th>Payment Status</th>
-                                <th>Status</th>
+                                <th>Total Amount</th>
+                                <th>Paid Amount</th>
+                                <th>Due Amount</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -28,29 +29,13 @@
                                 <tr id="purchase_{{$item->id}}">
                                     <td>{{$item->id}}</td>
                                     <td>{{ date('d-m-Y', strtotime($item->date)) }}</td>
-                                    <td>
-                                        @if ($item->payment_statut == 0)
-                                            <span class="badge bg-danger">Partial</span>
-                                        @else
-                                            <span class="badge bg-success">Paid</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($item->status == 0)
-                                            <span class="badge bg-danger">Pending</span>
-                                        @else
-                                            <span class="badge bg-success">Approved</span>
-                                        @endif
-                                    </td>
+                                    <td>{{$item->grand_total}}</td>
+                                    <td>{{$item->paid_amount}}</td>
+                                    <td>{{$item->due_amount}}</td>
                                     
                                     <td>
                                         <a href="javascript:void(0)" class="btn btn-success viewPurchase" data-id="{{$item->id}}"><i class="fa-solid fa-eye"></i></a>
                                         <a href="javascript:void(0)" class="btn btn-primary editPurchase" data-id="{{$item->id}}"><i class="fa-solid fa-pen-to-square"></i></a>
-                                        @if ($item->status == 0)
-                                        <a href="javascript:void(0)" class="btn btn-warning statusPurchase" data-id="{{$item->id}}"><i class="fa-solid fa-lock"></i></a>
-                                        @else
-                                        <a href="javascript:void(0)" class="btn btn-success statusPurchase" data-id="{{$item->id}}"><i class="fa-solid fa-lock-open"></i></a>
-                                        @endif
                                         <a href="javascript:void(0)" class="btn btn-danger deletePurchase" data-id="{{$item->id}}"><i class="fa-solid fa-trash-can"></i></a>
                                     </td>
                                 </tr>

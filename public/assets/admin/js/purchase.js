@@ -119,12 +119,12 @@ $(document).ready(function () {
                         const newRowData = [
                             response.purchase.id,
                             response.purchase.date.split(' ')[0],
-                            response.purchase.payment_statut ? 'Paid' : 'Partial',
-                            response.purchase.status ? 'Approved' : 'Pending',
+                            response.purchase.grand_total,
+                            response.purchase.paid_amount,
+                            response.purchase.due_amount,
 
                             '<a href="javascript:void(0)" class="btn btn-success viewPurchase" data-id="' + response.purchase.id + '"><i class="fas fa-eye"></i></a>' +
                             '<a href="javascript:void(0)" class="btn btn-success editPurchase" data-id="' + response.purchase.id + '"><i class="fas fa-pen-to-square"></i></a>' +
-                            '<a href="javascript:void(0)" class="btn btn-warning statusPurchase" data-id="' + response.purchase.id + '"><i class="fas fa-lock"></i></a>' +
                             '<a href="javascript:void(0)" class="btn btn-danger deletePurchase" data-id="' + response.purchase.id + '"><i class="fas fa-trash-can"></i></a>'
                         ];
                         $('#purchaseTable').DataTable().row.add(newRowData).draw(false);
@@ -142,39 +142,37 @@ $(document).ready(function () {
     });
 
 
-    $('#employeeTable').on('click', '.viewEmployee', function () {
-        var employeeId = $(this).data('id');
+    $('#purchaseTable').on('click', '.viewPurchase', function () {
+        var purchaseId = $(this).data('id');
         $.ajax({
             type: 'GET',
-            url: '/employees/' + employeeId,
+            url: '/purchases/' + purchaseId,
             dataType: 'json',
             success: function (response) {
                 if (response.status === 'success') {
 
-                    if (response.employee.profile_photo_path) {
-                        $("#viewEmployeeModal #profile_photo").attr("src", response.employee.profile_photo_path);
-                    } else {
-                        $("#viewEmployeeModal #profile_photo").attr("src", '/assets/admin/img/users/default.png');
-                    }
-                    var employee = response.employee;
-                    $('#viewEmployeeModal #employeeName').text(employee.user_name);
-                    $('#viewEmployeeModal #employeeId').text(employee.id);
-                    $('#viewEmployeeModal #departmentName').text(employee.department_name);
-                    $('#viewEmployeeModal #salaryAmount').text(employee.salary_amount);
-                    $('#viewEmployeeModal #joiningDate').text(employee.joining_date);
-                    $('#viewEmployeeModal #regineDate').text(employee.regine_date);
-                    $('#viewEmployeeModal #email').text(employee.email);
-                    $('#viewEmployeeModal #phone').text(employee.phone);
-                    $('#viewEmployeeModal #address').text(employee.address);
-                    $('#viewEmployeeModal #dob').text(employee.dob);
-                    $('#viewEmployeeModal #nid').text(employee.nid);
-                    $('#viewEmployeeModal #bankName').text(employee.bank_name);
-                    $('#viewEmployeeModal #accountHolder').text(employee.account_holder);
-                    $('#viewEmployeeModal #accountNnumber').text(employee.account_number);
+                    var purchase = response.purchase;
+                    $('#viewPurchaseModal input, #viewPurchaseModal textarea').prop('disabled', true);
+                    $('#viewPurchaseModal #user_name').text(purchase.user_name);
+                    $('#viewPurchaseModal #supplier_id').val(purchase.supplier_shop);
+                    $('#viewPurchaseModal #warehouse_id').val(purchase.warehouse_name);
+                    $('#viewPurchaseModal #purchase_category_id').val(purchase.purchase_cat_name);
+                    $('#viewPurchaseModal #unit_id').val(purchase.unit_name);
+                    $('#viewPurchaseModal #purchase_qty').val(purchase.purchase_qty);
+                    $('#viewPurchaseModal #date').val(purchase.date);
+                    $('#viewPurchaseModal #tax_rate').val(purchase.tax_rate);
+                    $('#viewPurchaseModal #payment_statut').val(purchase.payment_statut ===0 ? 'Full Paid' : 'Partial');
+                    $('#viewPurchaseModal #grand_total').val(purchase.grand_total);
+                    $('#viewPurchaseModal #paid_amount').val(purchase.paid_amount);
+                    $('#viewPurchaseModal #discount').val(purchase.discount);
+                    $('#viewPurchaseModal #due_amount').val(purchase.due_amount);
+                    $('#viewPurchaseModal #shipping_cost').val(purchase.shipping_cost);
+                    $('#viewPurchaseModal #notes').val(purchase.notes);
+                    
 
-                    $('#viewEmployeeModal').modal('toggle');
+                    $('#viewPurchaseModal').modal('toggle');
 
-                    $('#printEmployee').click(function () {
+                    $('#printPurchase').click(function () {
                         window.print();
                     });
 
@@ -191,88 +189,37 @@ $(document).ready(function () {
     });
 
 
-    $('#employeeTable').on('click', '.editEmployee', function () {
-        var employeeId = $(this).data('id');
+    $("#purchaseTable").on('click', '.editPurchase', function () {
+        var purchaseId = $(this).data('id'); 
+    
         $.ajax({
             type: 'GET',
-            url: '/departments',
+            url: '/purchases/' + purchaseId + '/edit',
             dataType: 'json',
-            success: function (departmentResponse) {
-                $('#editEmployeeModal #department_id').empty();
-                departmentResponse.departments.forEach(function (department) {
-                    $('#editEmployeeModal #department_id').append($('<option>', {
-                        value: department.id,
-                        text: department.department_name
-                    }));
-                });
-
-                $.ajax({
-                    type: 'GET',
-                    url: '/employees/' + employeeId,
-                    dataType: 'json',
-                    success: function (response) {
-                        $('#editEmployeeModal #employeeId').val(response.employee.id);
-                        $('#editEmployeeModal #user_id').val(response.employee.user_id);
-                        $('#editEmployeeModal #userName').text(response.employee.user_name);
-                        $('#editEmployeeModal #department_id').val(response.employee.hrm_department_id);
-                        $('#editEmployeeModal #salary_amount').val(response.employee.salary_amount);
-
-                        $('#editEmployeeModal #note').val(response.employee.note);
-
-                        $('#editEmployeeModal').modal('show');
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error fetching employee data:', error);
-
-                    }
-                });
+            success: function(response) {
+                $('editPurchaseModal #supplier_id').val(response.purchase.supplier_id);
+                $('editPurchaseModal #warehouse_id').val(response.purchase.warehouse_id);
+                $('editPurchaseModal #purchase_category_id').val(response.purchase.purchase_category_id);
+                $('editPurchaseModal #unit_id').val(response.purchase.unit_id);
+                
+                $('#editPurchaseModal').modal('toggle');
             },
-            error: function (xhr, status, error) {
-                console.error('Error fetching departments:', error);
-
+            error: function(xhr, status, error) {
+                console.error('Error fetching purchase data:', error);
             }
         });
+        
     });
+            
+    
+    
 
 
 
-    $('#editEmployeeForm').submit(function (event) {
-        event.preventDefault();
+    
 
-        var formData = $(this).serialize();
-        const employeeId = $("#employeeId").val();
-        $.ajax({
-            type: 'PUT',
-            url: '/employees/' + $('#editEmployeeModal #employeeId').val(),
-            data: formData,
-            dataType: 'json',
-            success: function (response) {
-                $('#editEmployeeModal').modal('hide');
-                const rowIndex = employeeTable.row($(`#employee_${employeeId}`)).index();
-                const newRowData = [
-                    response.employee.id,
-                    response.employee.user_id,
-                    response.employee.hrm_department_id,
-                    response.employee.joining_date,
-                    response.employee.status ? 'Active' : 'Inactive',
-
-                    '<a href="javascript:void(0)" class="btn btn-success viewEmployee" data-id="' + response.employee.id + '"><i class="fas fa-eye"></i></a>' +
-                    '<a href="javascript:void(0)" class="btn btn-success editEmployee" data-id="' + response.employee.id + '"><i class="fas fa-pen-to-square"></i></a>' +
-                    '<a href="javascript:void(0)" class="btn btn-warning statusEmployee" data-id="' + response.employee.id + '"><i class="fas fa-lock"></i></a>' +
-                    '<a href="javascript:void(0)" class="btn btn-danger deleteEmployee" data-id="' + response.employee.id + '"><i class="fas fa-trash-can"></i></a>'
-                ];
-                employeeTable.row(rowIndex).data(newRowData).draw(false);
-                location.reload();
-            },
-            error: function (xhr, status, error) {
-                console.error('Error updating employee:', error);
-
-            }
-        });
-    });
-
-    $("#employeeTable").on("click", ".deleteEmployee", function () {
-        var employeeId = $(this).data("id");
+    $("#purchaseTable").on("click", ".deletePurchase", function () {
+        var purchaseId = $(this).data('id');
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -285,11 +232,11 @@ $(document).ready(function () {
             if (result.isConfirmed) {
                 $.ajax({
                     type: "DELETE",
-                    url: `/employees/${employeeId}`,
+                    url: `/purchases/${purchaseId}`,
                     dataType: "json",
                     success: function (response) {
                         if (response.status === 'success') {
-                            employeeTable.row($(`#employee_${employeeId}`).closest('tr')).remove().draw(false);
+                            purchaseTable.row($(`#purchase_${purchaseId}`).closest('tr')).remove().draw(false);
                             toastr.success(response.message);
                         } else if (response.status === 'failed') {
                             toastr.error(response.message);
@@ -303,54 +250,7 @@ $(document).ready(function () {
         });
     });
 
-    $("#employeeTable").on("click", ".statusEmployee", function () {
-        var employeeId = $(this).data('id');
-        var row = $(this).closest('tr');
-
-        var currentStatusText = row.find('td:eq(4)').text();
-        var currentStatus = currentStatusText.trim().toLowerCase() === 'active' ? 1 : 0;
-
-        var newStatus;
-        var confirmMessage;
-        if (currentStatus === 0) {
-            newStatus = 1;
-            confirmMessage = "Are you sure you want to active?";
-        } else {
-            newStatus = 0;
-            confirmMessage = "Are you sure you want to make suspend?";
-        }
-
-        Swal.fire({
-            title: 'Confirmation',
-            text: confirmMessage,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: 'PUT',
-                    url: '/employees/' + employeeId + '/status',
-                    data: { status: newStatus },
-                    dataType: 'json',
-                    success: function (response) {
-                        toastr.success(response.message);
-
-                        var rowIndex = employeeTable.row(row).index();
-                        var rowData = employeeTable.row(rowIndex).data();
-                        rowData[4] = newStatus === 1 ? 'Active' : 'Suspended';
-                        employeeTable.row(rowIndex).data(rowData).draw(false);
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('An error occurred while processing your request.');
-                        console.error('Error:', xhr.responseText);
-                        toastr.error('An error occurred while processing your request.');
-                    }
-                });
-            }
-        });
-    });
+    
 
 
 });

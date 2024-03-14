@@ -78,7 +78,7 @@
 
               <div class="col-md-4 col-sm-12">
                 <div class="form-group mb-2">
-                  <label for="payment_statut" class="pb-2">Total Amount</label>
+                  <label for="grand_total" class="pb-2">Total Amount</label>
                   <input type="number" required id="grand_total" name="grand_total" class="form-control">
                 </div>
               </div>
@@ -117,8 +117,8 @@
             
             
             <div class="form-group mb-2">
-                <label for="note">Note</label>
-                <textarea class="form-control" name="note" id="note" cols="20" rows="5"></textarea>
+                <label for="notes">Note</label>
+                <textarea class="form-control" name="notes" id="notes" cols="20" rows="5"></textarea>
             </div>
             <div class="modal-footer mb-2">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
