@@ -96,6 +96,7 @@
     <script src="{{asset('assets/admin/js/product-units.js')}}"></script>
     <script src="{{asset('assets/admin/js/purchase-categories.js')}}"></script>
     <script src="{{asset('assets/admin/js/purchase.js')}}"></script>
+    <script src="{{asset('assets/admin/js/quotation.js')}}"></script>
 
     <script type="text/javascript">
         const baseUrl = "{{ url('/') }}";

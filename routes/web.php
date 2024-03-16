@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\QuotationController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\WarehouseController;
 use Illuminate\Support\Facades\Route;
@@ -67,6 +68,8 @@ Route::middleware([
     Route::get('/all-warehouses', [PurchaseController::class, 'allwarehouses'])->name('allwarehouses');
     Route::get('/all-purchase-cats', [PurchaseController::class, 'allPurchseCats'])->name('allPurchseCats');
     Route::get('/all-units', [PurchaseController::class, 'allUnits'])->name('allUnits');
+
+    Route::resource('/quotations', QuotationController::class);
 
 
 });

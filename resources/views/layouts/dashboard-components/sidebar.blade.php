@@ -74,18 +74,18 @@
                 </li>
                 <li>
                     <a class="show-cat-btn" href="##">
-                        <span class="icon paper" aria-hidden="true"></span>Pages
-                        <span class="category__btn transparent-btn" title="Open list">
-                            <span class="sr-only">Open list</span>
+                        <span class="icon paper" aria-hidden="true"></span>Quotation
+                        <span class="category__btn transparent-btn" title="Quotation list">
+                            <span class="sr-only">Quotation list</span>
                             <span class="icon arrow-down" aria-hidden="true"></span>
                         </span>
                     </a>
                     <ul class="cat-sub-menu">
                         <li>
-                            <a href="pages.html">All pages</a>
+                            <a href="{{route('quotations.index')}}">All Quotations</a>
                         </li>
                         <li>
-                            <a href="new-page.html">Add new page</a>
+                            <a href="new-page.html">Create New Quotation</a>
                         </li>
                     </ul>
                 </li>

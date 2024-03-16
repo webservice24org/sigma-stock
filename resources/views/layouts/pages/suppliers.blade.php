@@ -6,6 +6,3 @@
     @include('admin-components.suppliers.edit')
 @endsection
 
-@push('js')
-    <script src="{{ asset('assets/admin/js/suppliers.js') }}"></script>
-@endpush
