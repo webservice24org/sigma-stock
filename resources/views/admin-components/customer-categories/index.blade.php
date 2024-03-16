@@ -19,7 +19,6 @@
                             <tr>
                                 <th>id</th>
                                 <th>Customer Category</th>
-                                <th>Created By</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -28,7 +27,6 @@
                                 <tr id="category_{{ $item->id }}">
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->createdBy->name }}</td>
                                     <td>
                                         <a href="javascript:void(0)" class="btn btn-success editCategory"
                                             data-id="{{ $item->id }}">Edit</a>

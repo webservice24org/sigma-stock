@@ -22,7 +22,7 @@ $(document).ready(function () {
         tapToDismiss: false
     };
 
-    const customerCategoryTable = $("#customerCategoryTable").DataTable({});
+    const customerCategoryTable = $("#customerCategoryTable").DataTable();
 
     $('#createCustomerCategory').on('click', function () {
         $('#createCustomerCategoryModal').modal('toggle');
@@ -56,7 +56,6 @@ $(document).ready(function () {
                         toastr.success(response.message);
                         const newRowData = [
                             response.category.id,
-                            response.category.createdBy.name,
                             response.category.name,
                             `<a href="javascript:void(0)" class="btn btn-success editCategory" data-id="${response.category.id}}">Edit</a>
                             <a href="javascript:void(0)" class="btn btn-danger deleteCategory" data-id="${response.category.id}}">Delete</a>`
@@ -129,8 +128,7 @@ $(document).ready(function () {
                         const rowIndex = customerCategoryTable.row($(`#category_${categoryId}`)).index();
                         const rowData = [
                             response.category.id,
-                            response.category.createdBy.name,
-                            response.category.cat_name,
+                            response.category.name,
                             `<a href="javascript:void(0)" class="btn btn-success editCategory" data-id="${response.category.id}">Edit</a>
                             <a href="javascript:void(0)" class="btn btn-danger deleteCategory" data-id="${response.category.id}">Delete</a>`
                         ];

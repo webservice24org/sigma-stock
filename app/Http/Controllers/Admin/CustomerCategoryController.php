@@ -71,6 +71,7 @@ class CustomerCategoryController extends Controller
             $customerCategory = CustomerCategory::findOrFail($id);
             $customerCategory->update([
                 'name' => $request->input('name'),
+                'user_id' => Auth::id(),
             ]);
 
             return response()->json(['status' => 'success', 'message' => 'Customer category updated successfully.', 'category' => $customerCategory], 200);
