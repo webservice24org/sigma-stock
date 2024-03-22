@@ -82,26 +82,66 @@ public function create()
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        try {
+            $quotation = Quotation::findOrFail($id);
+            return view('admin-components.quotation.view', compact('quotation'));
+        } catch (Exception $ex) {
+            return redirect()->back()->with('error', 'Error: ' . $ex->getMessage());
+        }
     }
+
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $quotation = Quotation::findOrFail($id);
+        
+        $customers = Customer::all();
+        $warehouses = Warehouse::all();
+        $products = Product::all();
+        return view('admin-components.quotation.edit', compact('quotation', 'customers', 'warehouses', 'products'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Quotation $quotation)
     {
-        //
+        $request->validate([
+            'date' => 'required|date',
+            'customer_id' => 'required|exists:customers,id',
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'tax_percentage' => 'required|numeric|min:0',
+            'discount' => 'nullable|numeric|min:0',
+            'shipping_amount' => 'nullable|numeric|min:0',
+            'total_amount' => 'required|numeric|min:0',
+            'product_id' => 'required|exists:products,id',
+            'note' => 'nullable|string',
+        ]);
+
+        try {
+            $quotation->update([
+                'date' => $request->date,
+                'customer_id' => $request->customer_id,
+                'warehouse_id' => $request->warehouse_id,
+                'tax_percentage' => $request->tax_percentage,
+                'discount' => $request->discount ?? 0,
+                'shipping_amount' => $request->shipping_amount ?? 0,
+                'total_amount' => $request->total_amount,
+                'product_id' => $request->product_id,
+                'note' => $request->note,
+            ]);
+
+            return redirect()->route('quotations.index')->with('success', 'Quotation updated successfully');
+        } catch (Exception $ex) {
+            return redirect()->back()->with('error', 'Error updating quotation: ' . $ex->getMessage());
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.

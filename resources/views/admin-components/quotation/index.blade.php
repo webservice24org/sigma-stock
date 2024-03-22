@@ -36,8 +36,11 @@
                                     <td>{{$item->total_amount}}</td>
                                     <td>{{$item->discount}}</td>
                                     <td>
-                                        <a href="" class="btn btn-success viewQuotation" data-id="{{$item->id}}"><i class="fa-solid fa-eye"></i></a>
-                                        <a href="" class="btn btn-primary editQuotation" data-id="{{$item->id}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a href="{{ route('quotations.show', ['quotation' => $item->id]) }}" class="btn btn-success viewQuotation" data-id="{{ $item->id }}">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
+
+                                        <a href="{{ route('quotations.edit', ['quotation' => $item->id]) }}" class="btn btn-primary editQuotation" data-id="{{$item->id}}"><i class="fa-solid fa-pen-to-square"></i></a>
                                         <a href="" class="btn btn-danger deleteQuotation" data-id="{{$item->id}}"><i class="fa-solid fa-trash-can"></i></a>
                                     </td>
                                 </tr>
