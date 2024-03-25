@@ -17,14 +17,17 @@ return new class extends Migration {
             $table->string('code', 192);
             $table->string('type_barcode', 192);
             $table->string('name', 192);
-            $table->float('making_cost', 10, 0);
-            $table->float('general_price', 10, 0);
             $table->unsignedBigInteger('category_id')->index('category_id');
             $table->unsignedBigInteger('unit_id')->nullable()->index('unit_id_products');
+            $table->float('making_cost', 10, 0);
+            $table->float('general_price', 10, 0);
             $table->unsignedBigInteger('discount')->nullable();
             $table->float('tax_rate', 10, 0)->nullable()->default(0);
-            $table->text('image')->nullable();
             $table->text('note')->nullable();
+            $table->text('product_short_desc');
+            $table->longText('product_long_desc')->nullable();
+            $table->text('image')->nullable();
+            $table->longText('product_gallery')->nullable();
 
             $table->float('stock_alert', 10, 0)->nullable()->default(0);
 

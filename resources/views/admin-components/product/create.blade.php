@@ -1,4 +1,5 @@
 <div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="createProductModalLabel" aria-hidden="true">
+<script src="https://cdn.tiny.cloud/1/r24p9oqicwy6ccj2ntw3q6u2jal1ex8hzk0fpu8qj7ys77ob/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -31,7 +32,19 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="code">Product Code</label>
+                                <input type="text" name="code" id="code" class="form-control"
+                                    placeholder="Enter product code">
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="row mt-1 mb-1">
+                        <div class="col-md-12 col-sm-12">
                             <div class="form-group">
                                 <label for="name">Product Name</label>
                                 <input type="text" name="name" id="name" class="form-control"
@@ -40,13 +53,7 @@
                         </div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="code">Product Code</label>
-                                <input type="text" name="code" id="code" class="form-control"
-                                    placeholder="Enter product code">
-                            </div>
-                        </div>
+                        
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="type_barcode">Type Barcode</label>
@@ -61,8 +68,6 @@
                                     placeholder="Enter making cost">
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-4">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="general_price">General Price</label>
@@ -70,6 +75,44 @@
                                     placeholder="Enter general price">
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label for="discount">Discount</label>
+                                <input type="number" name="discount" id="discount" class="form-control"
+                                    placeholder="Discount rate">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label for="tax_rate">Tax</label>
+                                <input type="number" name="tax_rate" id="tax_rate" class="form-control"
+                                    placeholder="Tax rate">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label for="stock_alert">Stock Alert</label>
+                                <input type="number" name="stock_alert" id="stock_alert" class="form-control"
+                                    placeholder="Tax rate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="form-group">
+                            <label for="product_short_desc">Short Description</label>
+                            <textarea name="product_short_desc" id="product_short_desc" cols="30" rows="10" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="form-group">
+                            <label for="product_long_desc">Long Description</label>
+                            <textarea name="product_long_desc" id="product_long_desc" cols="30" rows="10" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="image">Image</label>
@@ -88,3 +131,12 @@
         </div>
     </div>
 </div>
+
+
+<script>
+  tinymce.init({
+    selector: 'textarea',
+    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+  });
+</script>

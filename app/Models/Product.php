@@ -20,11 +20,15 @@ class Product extends Model
         'image',
         'note',
         'stock_alert',
+        'product_short_desc',
+        'product_long_desc',
+        'product_gallery',
     ];
 
     public static function rules()
     {
         return [
+            'user_id' => 'required',
             'code' => 'required|string|max:192',
             'type_barcode' => 'required|string|max:192',
             'name' => 'required|string|max:192',
@@ -37,6 +41,9 @@ class Product extends Model
             'image' => 'nullable|image',
             'note' => 'nullable|string',
             'stock_alert' => 'nullable|numeric',
+            'product_short_desc' => 'nullable',
+            'product_long_desc' => 'nullable',
+            'product_gallery' => 'nullable',
         ];
     }
 

@@ -22,24 +22,14 @@ class QuotationController extends Controller
         return view('admin-components.quotation.index', compact('quotations'));
     }
     
-    /**
-     * Show the form for creating a new resource.
-     */
-//     public function create()
-// {
-//     $customers = Customer::all();
-//     $warehouses = Warehouse::all();
-//     $products = Product::all();
-//     return response()->json(['customers' => $customers, 'warehouses' => $warehouses, 'products'=>$products]);
-// }
 
-public function create()
-{
-    $customers = Customer::all();
-    $warehouses = Warehouse::all();
-    $products = Product::all();
-    return view('admin-components.quotation.create', compact('customers', 'warehouses', 'products'));
-}
+    public function create()
+    {
+        $customers = Customer::all();
+        $warehouses = Warehouse::all();
+        $products = Product::all();
+        return view('admin-components.quotation.create', compact('customers', 'warehouses', 'products'));
+    }
 
 
     /**
