@@ -22,9 +22,6 @@ $(document).ready(function () {
             code: {
                 required: true
             },
-            type_barcode: {
-                required: true
-            },
             name: {
                 required: true
             },
@@ -61,9 +58,6 @@ $(document).ready(function () {
             },
             code: {
                 required: "Please enter the product Code"
-            },
-            type_barcode: {
-                required: "Please enter the product Barcode"
             },
             name: {
                 required: "Please enter the product Name"
@@ -147,16 +141,13 @@ $(document).ready(function () {
                     $("#editProductModal #unit_id").val(response.product.unit_id);
                     $("#editProductModal #code").val(response.product.code);
                     $("#editProductModal #name").val(response.product.name);
-                    $("#editProductModal #type_barcode").val(response.product.type_barcode);
                     $("#editProductModal #making_cost").val(response.product.making_cost);
                     $("#editProductModal #general_price").val(response.product.general_price);
                     $("#editProductModal #discount").val(response.product.discount);
                     $("#editProductModal #tax_rate").val(response.product.tax_rate);
                     $("#editProductModal #stock_alert").val(response.product.stock_alert);
-                    $("#editProductModal #product_short_desc").val(response.product.product_short_desc);
-                    $("#editProductModal #product_long_desc").val(response.product.product_long_desc);
+                    $("#editProductModal #product_desc").val(response.product.product_desc);
                     
-                    $("#editProductModal #note").val(response.product.note);
             
                     // Display existing image
                     if (response.product.image) {
@@ -180,13 +171,11 @@ $(document).ready(function () {
             }
         });
     });
+    
 
     $("#editProductForm").validate({
         rules: {
             code: {
-                required: true
-            },
-            type_barcode: {
                 required: true
             },
             name: {
@@ -226,9 +215,6 @@ $(document).ready(function () {
             code: {
                 required: "Please enter the product Code"
             },
-            type_barcode: {
-                required: "Please enter the product Barcode"
-            },
             name: {
                 required: "Please enter the product Name"
             },
@@ -254,17 +240,23 @@ $(document).ready(function () {
             }
 
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
             $("#response").empty();
-            const formData = $(form).serializeArray();
+            const formData = new FormData(form); // Use FormData to handle file inputs
             const productId = $("#editProductId").val();
-
+        
+            // Append the image file to the FormData object
+            const imageFile = $("#image")[0].files[0];
+            formData.append("image", imageFile);
+        
             $.ajax({
-                type: "PUT",
-                url: `/products/${productId}`,
+                type: "POST",
+                url: `/product/update/${productId}`,
                 data: formData,
+                processData: false,
+                contentType: false,
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     $("#editProductModal").modal("toggle");
                     if (response.status === 'success') {
                         console.log(response.product);
@@ -288,11 +280,12 @@ $(document).ready(function () {
                         toastr.error(response.message);
                     }
                 },
-                error: function (error) {
+                error: function(error) {
                     toastr.error(`An error occurred: ${error.statusText}`);
                 }
             });
         }
+        
 
     });
 

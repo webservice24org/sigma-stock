@@ -44,6 +44,7 @@ Route::middleware([
 
     Route::resource('product-categories', ProductCategoryController::class)->except(['show', 'create']);
     Route::resource('products', ProductController::class)->except(['create']);
+    Route::post('product/update/{id}', [ProductController::class, 'update'])->name('product.update');
 
 
     Route::resource('suppliers', SupplierController::class);

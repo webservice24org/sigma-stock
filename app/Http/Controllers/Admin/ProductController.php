@@ -35,7 +35,6 @@ class ProductController extends Controller
     {
         $request->validate([
             'code' => 'required|string',
-            'type_barcode' => 'required|string',
             'name' => 'required|string',
             'making_cost' => 'required|numeric|min:0',
             'general_price' => 'required|numeric|min:0',
@@ -43,18 +42,15 @@ class ProductController extends Controller
             'unit_id' => 'required|exists:product_units,id',
             'discount' => 'nullable|numeric|min:0',
             'tax_rate' => 'nullable|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'note' => 'nullable|string',
             'stock_alert' => 'nullable|numeric|min:0',
-            'product_short_desc' => 'nullable|string',
-            'product_long_desc' => 'nullable|string'
+            'product_desc' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         try {
             $product = new Product();
             $product->user_id = Auth::id();
             $product->code = $request->code;
-            $product->type_barcode = $request->type_barcode;
             $product->name = $request->name;
             $product->making_cost = $request->making_cost;
             $product->general_price = $request->general_price;
@@ -70,10 +66,8 @@ class ProductController extends Controller
                 $product->image = 'assets/admin/img/products/' . $imageName;
             }         
             
-            $product->note = $request->note;
             $product->stock_alert = $request->stock_alert ?? 0;
-            $product->product_short_desc = $request->product_short_desc;
-            $product->product_long_desc = $request->product_long_desc;
+            $product->product_desc = $request->product_desc;
             
             $product->save();
 
@@ -112,7 +106,6 @@ class ProductController extends Controller
 {
     $request->validate([
         'code' => 'required|string',
-            'type_barcode' => 'required|string',
             'name' => 'required|string',
             'making_cost' => 'required|numeric|min:0',
             'general_price' => 'required|numeric|min:0',
@@ -121,38 +114,40 @@ class ProductController extends Controller
             'discount' => 'nullable|numeric|min:0',
             'tax_rate' => 'nullable|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'note' => 'nullable|string',
             'stock_alert' => 'nullable|numeric|min:0',
-            'product_short_desc' => 'nullable|string',
-            'product_long_desc' => 'nullable|string'
+            'product_desc' => 'nullable|string',
     ]);
 
     try {
         
         $product = Product::findOrFail($id);
-        
 
-        $product->user_id = Auth::id();
+        if ($request->hasFile('image')) {
+            if ($product->image && file_exists(public_path($product->image))) {
+                unlink(public_path($product->image));
+            }
+            $image = $request->file('image');
+            $imageName = 'sigma'.'_'.md5(uniqid()) . '_' . time(). '.'. $image->getClientOriginalExtension();
+            $image->move(public_path('assets/admin/img/products'), $imageName);
+            $imagepath = 'assets/admin/img/products/' . $imageName;
+            
+        } else{
+            $imagepath = $request->existingImagePath;
+        }
+
+            $product->user_id = Auth::id();
+            $product->category_id = $request->category_id;
+            $product->unit_id = $request->unit_id;
             $product->code = $request->code;
-            $product->type_barcode = $request->type_barcode;
             $product->name = $request->name;
             $product->making_cost = $request->making_cost;
             $product->general_price = $request->general_price;
-            $product->category_id = $request->category_id;
-            $product->unit_id = $request->unit_id;
             $product->discount = $request->discount ?? 0;
             $product->tax_rate = $request->tax_rate ?? 0;
             $product->stock_alert = $request->stock_alert ?? 0;
             $product->product_desc = $request->product_desc;
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = 'sigma'.'_'.md5(uniqid()) . '_' . time(). '.'. $image->getClientOriginalExtension();
-                $image->move(public_path('assets/admin/img/products'), $imageName);
-                $product->image = 'assets/admin/img/products/' . $imageName;
-                if ($product->image && file_exists(public_path($product->image))) {
-                    unlink(public_path($product->image));
-                }
-            } 
+            $product->image = $imagepath;
+            
 
         $product->save();
 

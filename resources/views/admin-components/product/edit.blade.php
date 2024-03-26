@@ -106,9 +106,10 @@
                             <div class="form-group">
                                 <label for="image">Image</label>
                                 <input type="file" name="image" id="image" class="form-control" placeholder="Choose image">
+                                <input type="hidden" name="existingImagePath" id="existingImagePath" class="form-control" >
                             </div>
-                            <div class="form-group">
-                                <img src="" id="existingImage" alt="" class="img-thumbnail">
+                            <div class="form-group mt-2">
+                                <img src="" id="existingImage" alt="" style="width:100px; height:100px;">
                             </div>
                         </div>
                     </div>
