@@ -33,32 +33,56 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'code' => 'required|string',
+            'type_barcode' => 'required|string',
+            'name' => 'required|string',
+            'making_cost' => 'required|numeric|min:0',
+            'general_price' => 'required|numeric|min:0',
+            'category_id' => 'required|exists:product_categories,id',
+            'unit_id' => 'required|exists:product_units,id',
+            'discount' => 'nullable|numeric|min:0',
+            'tax_rate' => 'nullable|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'note' => 'nullable|string',
+            'stock_alert' => 'nullable|numeric|min:0',
+            'product_short_desc' => 'nullable|string',
+            'product_long_desc' => 'nullable|string'
+        ]);
+
         try {
-
-            $validator = Validator::make($request->all(), Product::rules());
-            if ($validator->fails()) {
-                return response()->json(['status' => 'failed', 'message' => $validator->errors()], 422);
-            }
-
-            $requestData = $request->except('image');
-            $requestData['user_id'] = Auth::id();
-
+            $product = new Product();
+            $product->user_id = Auth::id();
+            $product->code = $request->code;
+            $product->type_barcode = $request->type_barcode;
+            $product->name = $request->name;
+            $product->making_cost = $request->making_cost;
+            $product->general_price = $request->general_price;
+            $product->category_id = $request->category_id;
+            $product->unit_id = $request->unit_id;
+            $product->discount = $request->discount ?? 0;
+            $product->tax_rate = $request->tax_rate ?? 0;
+            
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $imageName = 'sigma'.'_'.md5(uniqid()) . '_' . time(). '.'. $image->getClientOriginalExtension();
                 $image->move(public_path('assets/admin/img/products'), $imageName);
-                $requestData['image'] = 'assets/admin/img/products/' . $imageName;
-            }
+                $product->image = 'assets/admin/img/products/' . $imageName;
+            }         
+            
+            $product->note = $request->note;
+            $product->stock_alert = $request->stock_alert ?? 0;
+            $product->product_short_desc = $request->product_short_desc;
+            $product->product_long_desc = $request->product_long_desc;
+            
+            $product->save();
 
-            $product = Product::create($requestData);
-
-            return response()->json(['status' => 'success', 'message' => 'Product created successfully.', 'product' => $product], 201);
-        } catch (Exception $e) {
-
-            return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
+            return response()->json(['status' => 'success', 'message' => 'Product created successfully', 'product' => $product], 201);
+        } catch (Exception $ex) {
+            return response()->json(['status' => 'failed', 'message' => $ex->getMessage()], 500);
         }
-
     }
+
 
     /**
      * Display the specified resource.
@@ -85,30 +109,59 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
-    {
-        try {
-            $oldProduct = Product::findOrFail($id);
-            $oldProduct->update([
-                'code' => $request->input('code'),
-                'category_id' => $request->input('category_id'),
-                'unit_id' => $request->input('unit_id'),
-                'type_barcode' => $request->input('type_barcode'),
-                'name' => $request->input('name'),
-                'making_cost' => $request->input('making_cost'),
-                'general_price' => $request->input('general_price'),
-                'discount' => $request->input('discount'),
-                'tax_rate' => $request->input('tax_rate', 0),
-                'note' => $request->input('note'),
-                'stock_alert' => $request->input('stock_alert'),
-            ]);
+{
+    $request->validate([
+        'code' => 'required|string',
+            'type_barcode' => 'required|string',
+            'name' => 'required|string',
+            'making_cost' => 'required|numeric|min:0',
+            'general_price' => 'required|numeric|min:0',
+            'category_id' => 'required|exists:product_categories,id',
+            'unit_id' => 'required|exists:product_units,id',
+            'discount' => 'nullable|numeric|min:0',
+            'tax_rate' => 'nullable|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'note' => 'nullable|string',
+            'stock_alert' => 'nullable|numeric|min:0',
+            'product_short_desc' => 'nullable|string',
+            'product_long_desc' => 'nullable|string'
+    ]);
 
-            $product = $oldProduct->load('category', 'unit', 'createdBy');
+    try {
+        
+        $product = Product::findOrFail($id);
+        
 
-            return response()->json(['status' => 'success', 'message' => 'Product updated successfully.', 'product' => $product], 200);
-        } catch (Exception $e) {
-            return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
-        }
+        $product->user_id = Auth::id();
+            $product->code = $request->code;
+            $product->type_barcode = $request->type_barcode;
+            $product->name = $request->name;
+            $product->making_cost = $request->making_cost;
+            $product->general_price = $request->general_price;
+            $product->category_id = $request->category_id;
+            $product->unit_id = $request->unit_id;
+            $product->discount = $request->discount ?? 0;
+            $product->tax_rate = $request->tax_rate ?? 0;
+            $product->stock_alert = $request->stock_alert ?? 0;
+            $product->product_desc = $request->product_desc;
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = 'sigma'.'_'.md5(uniqid()) . '_' . time(). '.'. $image->getClientOriginalExtension();
+                $image->move(public_path('assets/admin/img/products'), $imageName);
+                $product->image = 'assets/admin/img/products/' . $imageName;
+                if ($product->image && file_exists(public_path($product->image))) {
+                    unlink(public_path($product->image));
+                }
+            } 
+
+        $product->save();
+
+        return response()->json(['status' => 'success', 'message' => 'Product updated successfully', 'product' => $product]);
+    } catch (Exception $ex) {
+        return response()->json(['status' => 'failed', 'message' => 'Error updating product: ' . $ex->getMessage()]);
     }
+}
+
 
     /**
      * Remove the specified resource from storage.

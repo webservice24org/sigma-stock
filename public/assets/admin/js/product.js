@@ -8,27 +8,9 @@ $.ajaxSetup({
 
 $(document).ready(function () {
 
-    //Toaster body customization
-    toastr.options = {
-        closeButton: true,
-        progressBar: true,
-        positionClass: 'toast-top-right',
-        showDuration: 300,
-        hideDuration: 1000,
-        timeOut: 5000,
-        extendedTimeOut: 1000,
-        showEasing: 'swing',
-        hideEasing: 'linear',
-        showMethod: 'fadeIn',
-        hideMethod: 'fadeOut',
-        tapToDismiss: false
-    };
 
-    var productsExist = productRowCount > 0;
+    const productTable = $('#productTable').DataTable();
 
-    if (productsExist) {
-        var productTable = $('#productTable').DataTable();
-    }
 
     $('#createProduct').on('click', function () {
         $('#createProductModal').modal('toggle');
@@ -120,23 +102,17 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (response) {
                     $(form).trigger('reset');
-                    $('#createCustomerModal').modal('toggle');
+                    $('#createProductModal').modal('toggle');
                     if (response.status === 'success') {
                         toastr.success(response.message);
                         const newRowData = [
-                            `<img src="/${response.teacher.photo}" alt="${response.product.image}" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">`,
+                            response.product.id,
+                            `<img src="/${response.product.image}" alt="${response.product.name}" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">`,
                             response.product.code,
                             response.product.name,
-                            response.product.category.name,
-                            response.product.type_barcode,
                             response.product.making_cost,
                             response.product.general_price,
-                            response.product.unit.name,
                             response.product.discount,
-                            response.product.tax_rate,
-                            response.product.note,
-                            response.product.stock_alert,
-                            response.product.created_by.name,
                             `<div class="btn-group">
                                 <a href="javascript:void(0)" class="btn btn-success btn-sm mx-2 editProduct" data-id="${response.product.id}">Edit</a>
                                 <a href="javascript:void(0)" class="btn btn-danger btn-sm deleteProduct" data-id="${response.product.id}">Delete</a>
@@ -166,6 +142,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.status === 'success') {
+                    // Set other fields' values
                     $("#editProductModal #category_id").val(response.product.category_id);
                     $("#editProductModal #unit_id").val(response.product.unit_id);
                     $("#editProductModal #code").val(response.product.code);
@@ -175,14 +152,29 @@ $(document).ready(function () {
                     $("#editProductModal #general_price").val(response.product.general_price);
                     $("#editProductModal #discount").val(response.product.discount);
                     $("#editProductModal #tax_rate").val(response.product.tax_rate);
+                    $("#editProductModal #stock_alert").val(response.product.stock_alert);
+                    $("#editProductModal #product_short_desc").val(response.product.product_short_desc);
+                    $("#editProductModal #product_long_desc").val(response.product.product_long_desc);
+                    
                     $("#editProductModal #note").val(response.product.note);
+            
+                    // Display existing image
+                    if (response.product.image) {
+                        $("#editProductModal #existingImage").attr("src", response.product.image);
+                    } else {
+                        $("#editProductModal #existingImage").hide();
+                    }
+                    $("#editProductModal #existingImagePath").val(response.product.image);
+
+    
                     $("#editProductModal #editProductId").val(response.product.id);
 
                     $("#editProductModal").modal('show');
                 } else if (response.status === 'failed') {
                     toastr.error(response.message);
                 }
-            },
+            }
+            ,
             error: function (xhr, status, error) {
                 toastr.error('An error occurred while fetching category details.');
             }
@@ -279,19 +271,13 @@ $(document).ready(function () {
                         toastr.success(response.message);
                         const rowIndex = productTable.row($(`#product_${productId}`)).index();
                         const rowData = [
-                            `<img src="/${response.teacher.photo}" alt="${response.product.image}" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">`,
+                            response.product.id,
+                            `<img src="/${response.product.image}" alt="${response.product.name}" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">`,
                             response.product.code,
                             response.product.name,
-                            response.product.category.name,
-                            response.product.type_barcode,
                             response.product.making_cost,
                             response.product.general_price,
-                            response.product.unit.name,
                             response.product.discount,
-                            response.product.tax_rate,
-                            response.product.note,
-                            response.product.stock_alert,
-                            response.product.created_by.name,
                             `<div class="btn-group">
                                 <a href="javascript:void(0)" class="btn btn-success btn-sm mx-2 editProduct" data-id="${response.product.id}">Edit</a>
                                 <a href="javascript:void(0)" class="btn btn-danger btn-sm deleteProduct" data-id="${response.product.id}">Delete</a>

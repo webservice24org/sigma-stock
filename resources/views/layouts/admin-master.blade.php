@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="{{asset('assets/admin/css/fontawesome.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/admin/css/style.css')}}">
 
+    <script src="https://cdn.tiny.cloud/1/r24p9oqicwy6ccj2ntw3q6u2jal1ex8hzk0fpu8qj7ys77ob/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
 </head>
 
 <body>
@@ -87,6 +89,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
     </script>
+    
     <script src="{{asset('assets/admin/js/font-all.min.js')}}"></script>
     <script src="{{asset('assets/admin/js/customer-categories.js')}}"></script>
     <script src="{{asset('assets/admin/js/suppliers.js')}}"></script>

@@ -1,5 +1,5 @@
 <div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="createProductModalLabel" aria-hidden="true">
-<script src="https://cdn.tiny.cloud/1/r24p9oqicwy6ccj2ntw3q6u2jal1ex8hzk0fpu8qj7ys77ob/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -27,7 +27,7 @@
                                 <select name="unit_id" id="unit_id" class="form-control">
                                     <option value="">Select Unit</option>
                                     @foreach ($units as $unit)
-                                        <option value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                        <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -55,11 +55,7 @@
                     <div class="row mt-4">
                         
                         <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="type_barcode">Type Barcode</label>
-                                <input type="text" name="type_barcode" id="type_barcode" class="form-control"
-                                    placeholder="Enter type barcode">
-                            </div>
+                            
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -76,7 +72,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mt-1 mb-1">
                         <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label for="discount">Discount</label>
@@ -101,26 +97,19 @@
                     </div>
                     <div class="row mt-3">
                         <div class="form-group">
-                            <label for="product_short_desc">Short Description</label>
-                            <textarea name="product_short_desc" id="product_short_desc" cols="30" rows="10" class="form-control"></textarea>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="form-group">
-                            <label for="product_long_desc">Long Description</label>
-                            <textarea name="product_long_desc" id="product_long_desc" cols="30" rows="10" class="form-control"></textarea>
+                            <label for="product_desc">Description</label>
+                            <textarea name="product_desc" id="product_desc" cols="30" rows="10" class="form-control"></textarea>
                         </div>
                     </div>
                     <div class="row mt-4">
-                        
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="image">Image</label>
-                                <input type="file" name="image" id="image" class="form-control"
-                                    placeholder="Choose image">
+                                <input type="file" name="image" id="image" class="form-control" placeholder="Choose image">
                             </div>
                         </div>
                     </div>
+
 
                     <div class="modal-footer mt-3">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -133,10 +122,10 @@
 </div>
 
 
-<script>
+<!-- <script>
   tinymce.init({
     selector: 'textarea',
     plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
   });
-</script>
+</script> -->
