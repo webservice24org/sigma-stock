@@ -68,7 +68,7 @@ class SupplierController extends Controller
 
     public function show($id)
     {
-        $supplier = Supplier::select('suppliers.*', 'users.name as supplier_name', 'created_by.name as created_by_name', 'user_details.*')
+        $supplier = Supplier::select('suppliers.*', 'users.name as supplier_name', 'users.email as user_email', 'created_by.name as created_by_name', 'user_details.*')
             ->join('users', 'suppliers.user_id', '=', 'users.id')
             ->leftJoin('user_details', 'users.id', '=', 'user_details.user_id')
             ->leftJoin('users as created_by', 'suppliers.created_by', '=', 'created_by.id')

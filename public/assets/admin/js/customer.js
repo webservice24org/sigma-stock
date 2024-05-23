@@ -50,10 +50,6 @@ $(document).ready(function () {
             business_phone: {
                 required: true
             },
-            product_rate: {
-                required: true,
-                number: true
-            },
             tax_rate: {
                 required: true,
                 number: true
@@ -71,10 +67,6 @@ $(document).ready(function () {
             },
             business_phone: {
                 required: "Please enter the Business Phone"
-            },
-            product_rate: {
-                required: "Please enter the Product Rate",
-                number: "Please enter a valid number for the Product Rate"
             },
             tax_rate: {
                 required: "Please enter the Tax Rate",
@@ -97,9 +89,6 @@ $(document).ready(function () {
                         toastr.success(response.message);
                         const newRowData = [
                             response.customer.id,
-                            response.customer.user.name,
-                            response.customer.user.email,
-                            response.customer.category.name,
                             response.customer.shopname,
                             response.customer.business_phone,
                             `<a href="javascript:void(0)" class="btn btn-success btn-sm editCustomer" data-id="${response.customer.id}}">Edit</a>
@@ -130,10 +119,10 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.status === 'success') {
                     $("#editCustomerModal #category_id").val(response.customer.category_id);
+                    $("#editCustomerModal #user_id").val(response.customer.user_id);
                     $("#editCustomerModal #shopname").val(response.customer.shopname);
                     $("#editCustomerModal #trade_license").val(response.customer.trade_license);
                     $("#editCustomerModal #business_phone").val(response.customer.business_phone);
-                    $("#editCustomerModal #product_rate").val(response.customer.product_rate);
                     $("#editCustomerModal #tax_rate").val(response.customer.tax_rate);
                     $("#editCustomerModal #editCustomerId").val(response.customer.id);
 
@@ -162,10 +151,6 @@ $(document).ready(function () {
             business_phone: {
                 required: true
             },
-            product_rate: {
-                required: true,
-                number: true
-            },
             tax_rate: {
                 required: true,
                 number: true
@@ -183,10 +168,6 @@ $(document).ready(function () {
             },
             business_phone: {
                 required: "Please enter the Business Phone"
-            },
-            product_rate: {
-                required: "Please enter the Product Rate",
-                number: "Please enter a valid number for the Product Rate"
             },
             tax_rate: {
                 required: "Please enter the Tax Rate",
@@ -210,9 +191,6 @@ $(document).ready(function () {
                         const rowIndex = customerTable.row($(`#customer_${customerId}`)).index();
                         const rowData = [
                             response.customer.id,
-                            response.customer.user.name,
-                            response.customer.user.email,
-                            response.customer.category.name,
                             response.customer.shopname,
                             response.customer.business_phone,
                             `<a href="javascript:void(0)" class="btn btn-success btn-sm editCustomer" data-id="${response.customer.id}}">Edit</a>

@@ -116,7 +116,7 @@ $(document).ready(function () {
                     $("#viewSupplierForm #user_photo").attr("src", '/assets/admin/img/users/default.png');
                 }
                 $("#viewSupplierForm #user_id").val(response.supplier.supplier_name);
-                $("#viewSupplierForm #user_mail").val(response.supplier.email);
+                $("#viewSupplierForm #user_mail").val(response.supplier.user_email);
                 $("#viewSupplierForm #shopname").val(response.supplier.shopname);
                 $("#viewSupplierForm #status").val(response.supplier.status ? 'Approved' : 'Pending');
                 $("#viewSupplierForm #trade_license").val(response.supplier.trade_license);

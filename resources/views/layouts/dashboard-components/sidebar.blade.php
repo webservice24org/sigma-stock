@@ -51,7 +51,10 @@
                     </a>
                     <ul class="cat-sub-menu">
                         <li>
-                            <a href="{{ route('product-categories.index') }}">Product Category</a>
+                            <a href="{{ route('product-categories.index') }}">Product Categories</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('product-units.index') }}">Product Units</a>
                         </li>
                         <li>
                             <a href="{{ route('products.index') }}">Products</a>

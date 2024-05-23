@@ -56,7 +56,6 @@ $(document).ready(function () {
                         toastr.success(response.message);
                         const newRowData = [
                             response.category.id,
-                            response.category.createdBy.name,
                             response.category.name,
                             `<a href="javascript:void(0)" class="btn btn-success editCategory" data-id="${response.category.id}}">Edit</a>
                             <a href="javascript:void(0)" class="btn btn-danger deleteCategory" data-id="${response.category.id}}">Delete</a>`
@@ -131,7 +130,6 @@ $(document).ready(function () {
                         const rowData = [
                             response.category.id,
                             response.category.name,
-                            response.category.created_by.name,
                             `<a href="javascript:void(0)" class="btn btn-success editCategory" data-id="${response.category.id}">Edit</a>
                             <a href="javascript:void(0)" class="btn btn-danger deleteCategory" data-id="${response.category.id}">Delete</a>`
                         ];

@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->string('shopname')->nullable();
             $table->string('trade_license')->nullable();
             $table->string('business_phone')->nullable();
-            $table->float('product_rate');
             $table->float('tax_rate', 10, 0)->nullable()->default(0);
 
             $table->foreign('user_id')->references('id')->on('users')

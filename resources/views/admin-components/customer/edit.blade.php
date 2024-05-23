@@ -9,7 +9,7 @@
                 <form action="" method="POST" id="editCustomerForm">
                     @csrf
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="category_id">Customer Category</label>
                                 <select name="category_id" id="category_id" class="form-control">
@@ -20,13 +20,24 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="user_id">Select User</label>
+                                <select name="user_id" id="user_id" class="form-control">
+                                    <option value="">Select User</option>
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="shopname">Shop Name</label>
                                 <input type="text" name="shopname" id="shopname" class="form-control">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="trade_license">Trade License</label>
                                 <input type="text" name="trade_license" id="trade_license" class="form-control">
@@ -38,12 +49,6 @@
                             <div class="form-group">
                                 <label for="business_phone">Business Phone</label>
                                 <input type="text" name="business_phone" id="business_phone" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="product_rate">Product Rate</label>
-                                <input type="text" name="product_rate" id="product_rate" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-4">

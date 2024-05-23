@@ -50,7 +50,6 @@ Route::middleware([
     Route::resource('suppliers', SupplierController::class);
     Route::put('/suppliers/{id}/status', [SupplierController::class, 'updateStatus'])->name('suppliers.updateStatus');
 
-
     Route::get('/users', [SupplierController::class, 'allUsers']);
 
     Route::resource('/hrm-departments', HrmDepartmentController::class);

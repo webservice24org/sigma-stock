@@ -17,7 +17,6 @@
                         <thead>
                             <tr>
                                 <th>id</th>
-                                <th>Created By</th>
                                 <th>Unit Name</th>
                                 <th>Action</th>
                             </tr>
@@ -26,7 +25,6 @@
                             @foreach ($productUnits as $item)
                                 <tr id="unit_{{$item->id}}">
                                     <td>{{$item->id}}</td>
-                                    <td>{{$item->user->name}}</td>
                                     <td>{{$item->unit_name}}</td>
                                     
                                     <td>

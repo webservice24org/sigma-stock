@@ -18,9 +18,6 @@
                         <thead>
                             <tr>
                                 <th>id</th>
-                                <th>User Name</th>
-                                <th>User Email</th>
-                                <th>Category Name</th>
                                 <th>Shop Name</th>
                                 <th>Business Phone</th>
                                 <th>Action</th>
@@ -30,9 +27,6 @@
                             @forelse ($customers as $customer)
                                 <tr id="category_{{ $customer->id }}">
                                     <td>{{ $customer->id }}</td>
-                                    <td>{{ $customer->user->name }}</td>
-                                    <td>{{ $customer->user->email }}</td>
-                                    <td>{{ $customer->category->name }}</td>
                                     <td>{{ $customer->shopname }}</td>
                                     <td>{{ $customer->business_phone }}</td>
                                     <td>

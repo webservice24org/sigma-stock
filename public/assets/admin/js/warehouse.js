@@ -46,7 +46,6 @@ $(document).ready(function () {
                         toastr.success(response.message);
                         const newRowData = [
                             response.warehouse.id,
-                            response.warehouse.user_id,
                             response.warehouse.warehouse_name,
                             response.warehouse.warehouse_address,
                             '<a href="javascript:void(0)" class="btn btn-success editWarehouse" data-id="' + response.warehouse.id + '"><i class="fas fa-pen-to-square"></i></a>' +
@@ -54,7 +53,6 @@ $(document).ready(function () {
 
                         ];
                         $('#warehouseTable').DataTable().row.add(newRowData).draw(false);
-                        location.reload();
 
                     } else if (response.status === 'failed') {
                         toastr.error(response.message);
@@ -127,14 +125,12 @@ $(document).ready(function () {
                         const rowIndex = warehouseTable.row($(`#warehouse_${warehouseId}`)).index();
                         const rowData = [
                             response.warehouse.id,
-                            response.warehouse.user_id,
                             response.warehouse.warehouse_name,
                             response.warehouse.warehouse_address,
                             '<a href="javascript:void(0)" class="btn btn-success editWarehouse" data-id="' + response.warehouse.id + '"><i class="fas fa-pen-to-square"></i></a>' +
                             '<a href="javascript:void(0)" class="btn btn-danger deleteWarehouse" data-id="' + response.warehouse.id + '"><i class="fas fa-trash-can"></i></a>'
                         ];
                         warehouseTable.row(rowIndex).data(rowData).draw(false);
-                        location.reload();
                     } else if (response.status === 'failed') {
                         toastr.error(response.message);
                     }

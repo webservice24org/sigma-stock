@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\CustomerCategory;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Exception;
 
@@ -17,7 +18,8 @@ class CustomerController extends Controller
     {
         $customers = Customer::all();
         $categories = CustomerCategory::get();
-        return view('layouts.pages.customer', compact('customers', 'categories'));
+        $users = User::get();
+        return view('layouts.pages.customer', compact('customers', 'categories', 'users'));
     }
 
 
@@ -32,7 +34,6 @@ class CustomerController extends Controller
             'shopname' => 'required|string|max:255',
             'trade_license' => 'nullable|string|max:255',
             'business_phone' => 'nullable|string|max:20',
-            'product_rate' => 'required|numeric',
             'tax_rate' => 'nullable|numeric',
         ]);
 
@@ -42,9 +43,8 @@ class CustomerController extends Controller
                 'shopname' => $request->input('shopname'),
                 'trade_license' => $request->input('trade_license'),
                 'business_phone' => $request->input('business_phone'),
-                'product_rate' => $request->input('product_rate'),
                 'tax_rate' => $request->input('tax_rate', 0),
-                'user_id' => 2,
+                'user_id' => $request->input('user_id')
             ]);
 
             $customer = $newCustomer->load('category', 'user');
@@ -88,7 +88,6 @@ class CustomerController extends Controller
             'shopname' => 'required|string|max:255',
             'trade_license' => 'nullable|string|max:255',
             'business_phone' => 'nullable|string|max:20',
-            'product_rate' => 'required|numeric',
             'tax_rate' => 'nullable|numeric',
         ]);
 
@@ -99,8 +98,8 @@ class CustomerController extends Controller
                 'shopname' => $request->input('shopname'),
                 'trade_license' => $request->input('trade_license'),
                 'business_phone' => $request->input('business_phone'),
-                'product_rate' => $request->input('product_rate'),
                 'tax_rate' => $request->input('tax_rate', 0),
+                'user_id' => $request->input('user_id')
             ]);
 
             $customer = $oldCustomer->load('category', 'user');

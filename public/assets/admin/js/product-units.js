@@ -40,14 +40,13 @@ $(document).ready(function () {
                         toastr.success(response.message);
                         const newRowData = [
                             response.unit.id,
-                            response.unit.user_id,
                             response.unit.unit_name,
                             '<a href="javascript:void(0)" class="btn btn-success editunit" data-id="' + response.unit.id + '"><i class="fas fa-pen-to-square"></i></a>' +
                             '<a href="javascript:void(0)" class="btn btn-danger deleteunit" data-id="' + response.unit.id + '"><i class="fas fa-trash-can"></i></a>'
 
                         ];
                         $('#unitTable').DataTable().row.add(newRowData).draw(false);
-                        location.reload();
+                        
 
                     } else if (response.status === 'failed') {
                         toastr.error(response.message);
@@ -113,13 +112,11 @@ $(document).ready(function () {
                         const rowIndex = unitTable.row($(`#unit_${unitId}`)).index();
                         const rowData = [
                             response.unit.id,
-                            response.unit.user_id,
                             response.unit.unit_name,
                             '<a href="javascript:void(0)" class="btn btn-success editunit" data-id="' + response.unit.id + '"><i class="fas fa-pen-to-square"></i></a>' +
                             '<a href="javascript:void(0)" class="btn btn-danger deleteunit" data-id="' + response.unit.id + '"><i class="fas fa-trash-can"></i></a>'
                         ];
                         unitTable.row(rowIndex).data(rowData).draw(false);
-                        location.reload();
                     } else if (response.status === 'failed') {
                         toastr.error(response.message);
                     }
