@@ -40,7 +40,6 @@ $(document).ready(function () {
                         toastr.success(response.message);
                         const newRowData = [
                             response.department.id,
-                            response.department.user_id,
                             response.department.department_name,
 
                             '<a href="javascript:void(0)" class="btn btn-success editDepartment" data-id="' + response.department.id + '"><i class="fas fa-pen-to-square"></i></a>' +
@@ -49,7 +48,7 @@ $(document).ready(function () {
 
                         ];
                         $('#departmentTable').DataTable().row.add(newRowData).draw(false);
-                        location.reload();
+                        
 
                     } else if (response.status === 'failed') {
                         toastr.error(response.message);
@@ -112,7 +111,6 @@ $(document).ready(function () {
 
                         var newRowData = [
                             response.department.id,
-                            response.department.user_id,
                             response.department.department_name,
 
                             '<a href="javascript:void(0)" class="btn btn-success editDepartment" data-id="' + response.department.id + '"><i class="fas fa-pen-to-square"></i></a>' +
