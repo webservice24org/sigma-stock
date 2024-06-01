@@ -100,6 +100,8 @@
     <script src="{{asset('assets/admin/js/purchase-categories.js')}}"></script>
     <script src="{{asset('assets/admin/js/purchase.js')}}"></script>
     <script src="{{asset('assets/admin/js/quotation.js')}}"></script>
+    <script src="{{asset('assets/admin/js/permission.js')}}"></script>
+    <script src="{{asset('assets/admin/js/role.js')}}"></script>
 
     <script type="text/javascript">
         const baseUrl = "{{ url('/') }}";

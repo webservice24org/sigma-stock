@@ -185,10 +185,10 @@
                     </a>
                     <ul class="cat-sub-menu">
                         <li>
-                            <a href="users-01.html">Users-01</a>
+                            <a href="{{route('roles.index')}}">User Roles</a>
                         </li>
                         <li>
-                            <a href="users-02.html">Users-02</a>
+                            <a href="{{route('permissions.index')}}">Role Permissions</a>
                         </li>
                     </ul>
                 </li>

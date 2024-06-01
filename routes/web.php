@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\QuotationController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\WarehouseController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -72,6 +74,9 @@ Route::middleware([
     Route::resource('/quotations', QuotationController::class);
 
 
+    Route::resource('/permissions', PermissionController::class);
+    Route::resource('/roles', RoleController::class);
+    
 });
 
 
