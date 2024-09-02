@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\HrmDepartment;
+use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -20,7 +21,8 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::all();
-        return View('layouts.pages.employee', compact('employees'));
+        $users = User::all();
+        return View('layouts.pages.employee', compact('employees','users'));
     }
 
     public function allDepartments()

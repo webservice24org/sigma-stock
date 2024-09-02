@@ -11,27 +11,7 @@ $(document).ready(function () {
         $('#createEmployeeModal').modal('toggle');
     })
 
-    $('#createEmployeeModal').on('shown.bs.modal', function () {
-        $.ajax({
-            type: 'GET',
-            url: '/users',
-            dataType: "json",
-            success: function (response) {
-                $('#user_id').empty();
-                $.each(response.users, function (index, user) {
-                    $('#user_id').append($('<option>', {
-                        value: user.id,
-                        text: user.name
-                    }));
-                });
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching users:', error);
-            }
-        });
-
-    });
-
+    
     $('#createEmployeeModal').on('shown.bs.modal', function () {
         $.ajax({
             type: 'GET',

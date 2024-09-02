@@ -185,6 +185,9 @@
                     </a>
                     <ul class="cat-sub-menu">
                         <li>
+                            <a href="{{route('users.index')}}">All Users</a>
+                        </li>
+                        <li>
                             <a href="{{route('roles.index')}}">User Roles</a>
                         </li>
                         <li>

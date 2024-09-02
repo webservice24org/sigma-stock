@@ -6,32 +6,34 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="float-start">All Roles</h2>
-                    <a href="{{route('roles.create')}}" class="btn btn-primary float-end">Add Role</a>
+                    <a href="{{route('users.create')}}" class="btn btn-primary float-end">Add User</a>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered table-striped" id="roleTable">
+                    <table class="table table-bordered table-striped" id="userTable">
                         <thead>
                             <tr>
-                                <th>Role ID</th>
-                                <th>Role Name</th>
+                                <th>User ID</th>
+                                <th>User Name</th>
+                                <th>Email</th>
+                                <th>Picture</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach ($roles as $item)
-                            <tr id="role_{{ $item->id }}">
+                        @foreach ($users as $item)
+                            <tr id="user_{{ $item->id }}">
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->name }}</td>
+                                <td>{{ $item->email }}</td>
+                                <td>
+                                    <img src="{{ $item->profile_photo_path }}" alt="{{ $item->name }}" width="100" height="100">
+                                </td>
                                 <td>
                                     
-                                    <a href="{{ url('roles/'.$item->id.'/give-permissions') }}" class="btn btn-primary">Add/Edit Permission</a>
-                                    <a href="{{ route('roles.edit', $item->id) }}" class="btn btn-primary">Edit</a>
-                                    <form action="{{ route('roles.destroy', $item->id) }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                    </form>
-
+                                    
+                                    <a href="{{ route('users.edit', $item->id) }}" class="btn btn-primary">Edit</a>
+                                    <a href="javascript:void(0)" class="btn btn-danger btn-sm deleteUser"
+                                            data-id="{{ $item->id }}">Delete</a>
                                     
                                 </td>
                             </tr>

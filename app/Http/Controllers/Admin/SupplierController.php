@@ -17,7 +17,8 @@ class SupplierController extends Controller
     public function index()
     {
         $suppliers = Supplier::all();
-        return view('layouts.pages.suppliers', compact('suppliers'));
+        $users = User::all();
+        return view('layouts.pages.suppliers', compact('suppliers','users'));
     }
 
     public function allUsers()

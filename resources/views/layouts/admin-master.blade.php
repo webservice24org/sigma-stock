@@ -27,12 +27,12 @@
 
 <body>
     <div class="layer"></div>
-    <!-- ! Body -->
+    <!-- ! Body 
     <div id="loader" class="LoadingOverlay d-none">
         <div class="Line-Progress">
             <div class="indeterminate"></div>
         </div>
-    </div>
+    </div>-->
     <a class="skip-link sr-only" href="#skip-target">Skip to content</a>
     <div class="page-flex">
         <!-- ! Sidebar -->
@@ -100,8 +100,6 @@
     <script src="{{asset('assets/admin/js/purchase-categories.js')}}"></script>
     <script src="{{asset('assets/admin/js/purchase.js')}}"></script>
     <script src="{{asset('assets/admin/js/quotation.js')}}"></script>
-    <script src="{{asset('assets/admin/js/permission.js')}}"></script>
-    <script src="{{asset('assets/admin/js/role.js')}}"></script>
 
     <script type="text/javascript">
         const baseUrl = "{{ url('/') }}";
@@ -112,9 +110,8 @@
     <script src="{{ asset('assets/admin/plugins/feather.min.js') }}"></script>
 
     <script src="{{ asset('assets/admin/js/script.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/user.js') }}"></script>
 
-    {{-- dynamic js --}}
-    @stack('js')
 </body>
 
 </html>

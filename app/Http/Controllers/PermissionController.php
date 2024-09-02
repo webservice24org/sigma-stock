@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Exception;
 use Spatie\Permission\Models\Permission;
 
 
@@ -60,16 +61,26 @@ class PermissionController extends Controller
     }
 
 
-    public function destroy($id)
+
+    
+    public function destroy($permissionId)
     {
         try {
-            $permission = Permission::findOrFail($id);
-            $permission->delete();
+            // Perform the delete operation directly via the DB facade
+            $deleted = DB::table('permissions')->where('id', $permissionId)->delete();
 
-            return response()->json(['status' => 'success', 'message' => 'Permission deleted successfully.'], 200);
-        } catch (Exception $e) {
-            return response()->json(['status' => 'failed', 'message' => $e->getMessage()], 500);
+            if ($deleted) {
+                return redirect()->route('permissions.index')->with('success', 'Permission deleted successfully!');
+            } else {
+                return redirect()->route('permissions.index')->with('error', 'Permission not found or could not be deleted.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('permissions.index')->with('error', 'Error: ' . $e->getMessage());
         }
     }
+    
+
+
+
 
 }

@@ -95,10 +95,12 @@
                             <i data-feather="settings" aria-hidden="true"></i>
                             <span>Account settings</span>
                         </a></li>
-                    <li><a class="danger" href="##">
-                            <i data-feather="log-out" aria-hidden="true"></i>
-                            <span>Log out</span>
-                        </a></li>
+                        <li>
+    <a class="danger" href="javascript:void(0);" id="logoutLink">
+        <i data-feather="log-out" aria-hidden="true"></i>
+        <span>Log out</span>
+    </a>
+</li>
                 </ul>
             </div>
         </div>

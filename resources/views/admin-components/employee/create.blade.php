@@ -12,7 +12,9 @@
                 <label for="user_id">Select User</label>
                 <select name="user_id" id="user_id" class="form-select" aria-label="Default select example">
                     <option value="" selected disabled>Select User</option>
-                    
+                    @foreach ($users as $user)
+                          <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="form-group mb-2">

@@ -25,8 +25,13 @@
                                 <td>
                                     
                                     <a href="{{ route('permissions.edit', $item->id) }}" class="btn btn-primary">Edit</a>
-                                    <a href="javascript:void(0)" class="btn btn-danger btn-sm deletePermission"
-                                            data-id="{{ $item->id }}">Delete</a>
+                                    <form action="{{ route('permissions.destroy', $item->id) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+
+
                                     
                                 </td>
                             </tr>

@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,7 +53,7 @@ Route::middleware([
     Route::resource('suppliers', SupplierController::class);
     Route::put('/suppliers/{id}/status', [SupplierController::class, 'updateStatus'])->name('suppliers.updateStatus');
 
-    Route::get('/users', [SupplierController::class, 'allUsers']);
+    //Route::get('/users', [SupplierController::class, 'allUsers']);
 
     Route::resource('/hrm-departments', HrmDepartmentController::class);
     Route::resource('/employees', EmployeeController::class);
@@ -75,7 +76,18 @@ Route::middleware([
 
 
     Route::resource('/permissions', PermissionController::class);
+    Route::delete('/permissions/{permissionId}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
+
+
     Route::resource('/roles', RoleController::class);
+    Route::get('/roles/{roleId}/give-permissions', [RoleController::class,'givePermission'])->name('givePermission');
+    Route::put('/roles/{roleId}/give-permissions', [RoleController::class,'updatePermission'])->name('updatePermission');
+    Route::delete('/roles/{roleId}', [RoleController::class, 'destroy'])->name('roles.destroy');
+
+
+    Route::resource('/users', UserController::class);
+    Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+
     
 });
 
